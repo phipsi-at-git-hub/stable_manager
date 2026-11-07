@@ -1,4 +1,3 @@
-
 # StableManager — UI/UX Concept
 
 **Document status:** Working baseline  
@@ -31,15 +30,15 @@ The interface should be:
 
 Suggested visual language:
 
-- Deep forest green as a primary brand colour.
+- Deep forest green as a primary brand color.
 - Warm off-white, sand, and neutral surfaces.
 - Dark charcoal text for readability.
-- Restrained accent colours for status and emphasis.
+- Restrained accent colous for status and emphasis.
 - Natural, professional imagery used selectively.
 
 Avoid a rustic or overly decorative aesthetic. The product should look like modern business software with an equestrian identity.
 
-Colour must not be the sole indicator of status. Pair colour with text, icons, or other visual cues.
+Colour must not be the sole indicator of status. Pair color with text, icons, or other visual cues.
 
 ## 4. Application Navigation
 

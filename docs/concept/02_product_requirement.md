@@ -1,4 +1,3 @@
-
 # StableManager — Product Requirements
 
 **Document status:** Working baseline  
@@ -65,7 +64,7 @@ Each requirement has an identifier to make it traceable in implementation tasks 
 |---|---|---|
 | HOR-001 | Must | Authorized users can create, view, update, and archive horse records. |
 | HOR-002 | Must | A horse belongs to one Stable workspace. |
-| HOR-003 | Must | A horse record supports name, date of birth, sex, breed, colour, and descriptive notes. |
+| HOR-003 | Must | A horse record supports name, date of birth, sex, breed, color, and descriptive notes. |
 | HOR-004 | Should | A horse record supports UELN or another relevant identification number. |
 | HOR-005 | Should | A horse record supports height and additional identification details. |
 | HOR-006 | Must | A horse has a lifecycle status, such as active, inactive, sold, or deceased. |
@@ -191,7 +190,7 @@ Suggested initial categories include veterinary visit, vaccination, dental care,
 - Forms must provide clear validation and actionable error messages.
 - Important actions must have clear confirmation or undo behavior where appropriate.
 - Interfaces should use semantic structure and accessible labels.
-- Colour must not be the only way to communicate status.
+- Color must not be the only way to communicate status.
 
 ### Maintainability
 

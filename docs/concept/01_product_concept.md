@@ -1,4 +1,3 @@
-
 # StableManager — Product Concept
 
 **Document status:** Working baseline  

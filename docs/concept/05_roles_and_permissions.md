@@ -1,4 +1,3 @@
-
 # StableManager — Roles and Permissions
 
 **Document status:** Working baseline  

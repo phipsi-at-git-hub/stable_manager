@@ -1,4 +1,3 @@
-
 # StableManager — API Design
 
 **Document status:** Working baseline  

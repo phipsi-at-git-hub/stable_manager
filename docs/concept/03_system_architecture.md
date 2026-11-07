@@ -1,4 +1,3 @@
-
 # StableManager — System Architecture
 
 **Document status:** Working baseline  

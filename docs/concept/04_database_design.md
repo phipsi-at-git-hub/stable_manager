@@ -1,4 +1,3 @@
-
 # StableManager — Database Design
 
 **Document status:** Conceptual baseline; validate during implementation  
