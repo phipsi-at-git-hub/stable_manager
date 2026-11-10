@@ -48,7 +48,7 @@ StableManager aims to provide a consistent, searchable, permission-controlled so
 - Employees and stable staff.
 - Trainers and instructors.
 - Horse owners and authorized representatives.
-- Other people who need limited access to relevant horse information.
+- Other people who need limited access to relevant horse information such riding students, parents and others.
 
 The initial product should be designed for both boarding stables and riding schools, while keeping the domain model flexible enough for other horse businesses.
 
@@ -84,6 +84,7 @@ The initial product should be designed for both boarding stables and riding scho
 The following are not part of the initial release unless later prioritized:
 
 - AI assistant and automated recommendations.
+- Riding student records and relationships to trainer and horses.
 - GIS, mapping, and geospatial analysis.
 - Feeding plans and ration calculations.
 - Riding lesson scheduling and customer booking.
@@ -102,7 +103,7 @@ The architecture should not prevent these capabilities from being added later, b
 - A login account may be linked to a person record where appropriate.
 - Horse owners may receive access to selected information, but access is controlled by the stable and is not automatic.
 - Each stable controls its own users, horses, records, and documents.
-- StableManager is initially a cloud-hosted, multi-tenant SaaS application.
+- StableManager is initially a cloud-hosted, multi-tenant SaaS application. -> Debatable 
 - German is the initial product interface language. The technical design should avoid assumptions that prevent future localization.
 
 ## 8. Success Measures
@@ -135,7 +136,7 @@ Potential quantitative measures after launch include active stables, weekly acti
 
 These decisions should be confirmed before the corresponding functionality is implemented:
 
-- Exact customer subscription and pricing model.
+- Exact customer subscription and pricing model. -> Should this app be an cloud based service or on premise application that is installed, maintained and run on stable businesses own infrastructure? 
 - Whether horse-owner access is included in the first public release or introduced shortly afterward.
 - Detailed access rules for horse owners and external trainers.
 - Required horse identification fields for target markets.
