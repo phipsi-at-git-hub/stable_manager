@@ -1,0 +1,73 @@
+# Dependencies
+/vendor/
+/node_modules/
+
+# Build output
+/public/build/
+/public/hot/
+/public/build
+/public/fonts-manifest.dev.json
+/public/hot
+/public/storage
+
+/node_modules
+/auth.json
+_ide_helper.php
+Homestead.json
+Homestead.yaml
+
+compose.production.yaml
+
+# Environment
+.env
+.env.*
+.env.backup
+.env.production
+!.env.example
+!.env.docker.example
+.env.production.example
+.env.production.yaml
+
+# Laravel runtime
+/storage/*.key
+/storage/app/*
+!/storage/app/.gitkeep
+/storage/framework/*
+!/storage/framework/.gitkeep
+/storage/logs/*
+!/storage/logs/.gitkeep
+
+/bootstrap/cache/*
+!/bootstrap/cache/.gitkeep
+
+# Testing
+.phpactor.json
+.phpunit.cache/
+.phpunit.result.cache
+/.phpunit.cache
+/coverage/
+
+# IDE
+.idea/
+.vscode/
+/.codex
+/.cursor/
+/.idea
+/.nova
+/.vscode
+/.zed
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Storage
+/storage/*.key
+/storage/pail
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
