@@ -25,6 +25,11 @@ services:
       - |
         cp -an /opt/laravel/. /workspace/
         cp -f /opt/stablemanager/composer.lock /workspace/composer.lock
+        
+        # Remove obsolete Laravel scaffold frontend files
+        rm -f /workspace/vite.config.js
+        rm -f /workspace/resources/js/app.js
+
         mkdir -p /workspace/storage/framework/cache \
                  /workspace/storage/framework/sessions \
                  /workspace/storage/framework/views \
@@ -130,7 +135,7 @@ services:
       - -c
       - |
         npm install --no-audit --no-fund
-        npm run dev -- --host 0.0.0.0
+        npm run dev -- --config vite.config.ts --host 0.0.0.0
     networks:
       - backend
 
