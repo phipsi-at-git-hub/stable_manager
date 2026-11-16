@@ -1,14 +1,21 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+if [[ ! -f "$ROOT/compose.yaml" ]]; then
+  echo "Error: Could not detect project root."
+  exit 1
+fi
+
 cd "$ROOT"
 
 write_file() {
     local file="$1"
     mkdir -p "$(dirname "$file")"
     cat > "$file"
-    echo "Erstellt: $file"
+    echo "Created: $file"
 }
 
 # ==================================================
@@ -956,7 +963,7 @@ services:
     container_name: stablemanager-pgadmin
     restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@stablemanager.local}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@stablemanager.com}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-stablemanager-dev}
     ports:
       - "127.0.0.1:${PGADMIN_LISTEN_PORT:-5050}:80"
@@ -1183,8 +1190,8 @@ rm -f vite.config.js
 chmod +x docker/php/entrypoint.sh
 
 echo
-echo "Docker-Konfigurationsdateien wurden geschrieben."
-echo "Composer-Abhängigkeiten werden beim Docker-Build aufgelöst."
-echo "Die generierte composer.lock wird durch den Bootstrap-Service"
-echo "in das Projektverzeichnis übernommen."
-echo "Bestehende Modulverzeichnisse wurden nicht gelöscht."
+echo "Docker configuration files have been created."
+echo "Composer dependencies are resolved during the Docker build."
+echo "The generated composer.lock file is moved into the "
+echo "project directory by the bootstrap service."
+echo "Existing module directories were not deleted."

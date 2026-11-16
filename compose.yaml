@@ -261,7 +261,7 @@ services:
     container_name: stablemanager-pgadmin
     restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@stablemanager.local}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@stablemanager.com}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-stablemanager-dev}
     ports:
       - "127.0.0.1:${PGADMIN_LISTEN_PORT:-5050}:80"
