@@ -1,6 +1,18 @@
 name: stablemanager
 
 services:
+
+  # ------------------------------------------------
+  # Bootstrap
+  #
+  # Creates the Laravel skeleton in the host project
+  # directory and copies the generated Composer lock
+  # file into the project.
+  #
+  # IMPORTANT: The lock file is overwritten deliberately.
+  # cp -n would preserve an outdated lock file.
+  # ------------------------------------------------
+
   bootstrap:
     image: stablemanager-app:development
     build:
@@ -12,8 +24,7 @@ services:
       - -c
       - |
         cp -an /opt/laravel/. /workspace/
-        rm -f /workspace/vite.config.js
-        cp -n /opt/stablemanager/composer.lock /workspace/composer.lock || true
+        cp -f /opt/stablemanager/composer.lock /workspace/composer.lock
         mkdir -p /workspace/storage/framework/cache \
                  /workspace/storage/framework/sessions \
                  /workspace/storage/framework/views \
@@ -22,6 +33,10 @@ services:
     volumes:
       - .:/workspace
     restart: "no"
+
+  # ------------------------------------------------
+  # Laravel application
+  # ------------------------------------------------
 
   app:
     image: stablemanager-app:development
@@ -49,6 +64,7 @@ services:
       - sh
       - -c
       - |
+        composer validate --no-check-publish
         composer install --no-interaction --prefer-dist
         if ! grep -q '^APP_KEY=base64:' .env; then
           php artisan key:generate --force
@@ -66,15 +82,20 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "php-fpm", "-t"]
-        #- CMD-SHELL
-        #- php -r '$$s=@fsockopen("127.0.0.1",9000); exit($$s ? 0 : 1);'
+      test:
+        - CMD
+        - php-fpm
+        - -t
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 40s
     networks:
       - backend
+
+  # ------------------------------------------------
+  # Nginx
+  # ------------------------------------------------
 
   web:
     image: nginx:1.28-alpine
@@ -90,6 +111,10 @@ services:
         condition: service_healthy
     networks:
       - backend
+
+  # ------------------------------------------------
+  # Vite development server
+  # ------------------------------------------------
 
   vite:
     image: node:26-alpine
@@ -108,6 +133,10 @@ services:
         npm run dev -- --host 0.0.0.0
     networks:
       - backend
+
+  # ------------------------------------------------
+  # PostgreSQL
+  # ------------------------------------------------
 
   db:
     image: postgres:18-alpine
@@ -130,6 +159,10 @@ services:
     networks:
       - backend
 
+  # ------------------------------------------------
+  # Redis
+  # ------------------------------------------------
+
   redis:
     image: redis:8-alpine
     restart: unless-stopped
@@ -143,6 +176,10 @@ services:
       retries: 10
     networks:
       - backend
+
+  # ------------------------------------------------
+  # Queue worker
+  # ------------------------------------------------
 
   queue:
     image: stablemanager-app:development
@@ -173,6 +210,10 @@ services:
     networks:
       - backend
 
+  # ------------------------------------------------
+  # Scheduler
+  # ------------------------------------------------
+
   scheduler:
     image: stablemanager-app:development
     restart: unless-stopped
@@ -199,6 +240,10 @@ services:
     networks:
       - backend
 
+  # ------------------------------------------------
+  # Mailpit
+  # ------------------------------------------------
+
   mailpit:
     image: axllent/mailpit:v1.27
     restart: unless-stopped
@@ -206,6 +251,24 @@ services:
       - "127.0.0.1:8025:8025"
     networks:
       - backend
+
+  # ------------------------------------------------
+  # pgAdmin
+  # ------------------------------------------------
+
+  pgadmin:
+    image: dpage/pgadmin4:9.19
+    container_name: stablemanager-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@stablemanager.local}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-stablemanager-dev}
+    ports:
+      - "127.0.0.1:${PGADMIN_LISTEN_PORT:-5050}:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
 
 networks:
   backend:
@@ -218,3 +281,4 @@ volumes:
   node_modules_data:
   storage_data:
   bootstrap_cache:
+  pgadmin_data: 

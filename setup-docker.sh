@@ -88,11 +88,14 @@ write_file package.json <<'EOF'
         "@vitejs/plugin-vue": "^6.0.0",
         "laravel-vite-plugin": "^2.0.0",
         "typescript": "^5.9.0",
-        "vite": "^7.0.0"
+        "vite": "^7.0.0",
+        "vite-plugin-vuetify": "^2.1.0"
     },
     "dependencies": {
         "@inertiajs/vue3": "^2.0.0",
-        "vue": "^3.5.0"
+        "@mdi/font": "^7.4.0",
+        "vue": "^3.5.0",
+        "vuetify": "^3.0.0"
     }
 }
 EOF
@@ -101,6 +104,7 @@ write_file vite.config.ts <<'EOF'
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import vuetify from 'vite-plugin-vuetify';
 
 export default defineConfig({
     plugins: [
@@ -112,6 +116,9 @@ export default defineConfig({
             refresh: true,
         }),
         vue(),
+        vuetify({
+            autoImport: true,
+        }),
     ],
     server: {
         host: '0.0.0.0',
@@ -184,6 +191,30 @@ EOF
 write_file resources/js/app.ts <<'EOF'
 import { createApp, h, type DefineComponent } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
+import { createVuetify } from 'vuetify';
+
+import 'vuetify/styles';
+import '@mdi/font/css/materialdesignicons.css';
+
+const vuetify = createVuetify({
+    theme: {
+        defaultTheme: 'stableManagerLight',
+        themes: {
+            stableManagerLight: {
+                dark: false,
+                colors: {
+                    primary: '#345B4A',
+                    secondary: '#718579',
+                    background: '#F7F8F6',
+                    surface: '#FFFFFF',
+                    error: '#B3261E',
+                    success: '#397653',
+                    warning: '#B7791F',
+                },
+            },
+        },
+    },
+});
 
 const pages = import.meta.glob<{ default: DefineComponent }>(
     './Modules/**/*.vue',
@@ -209,6 +240,7 @@ createInertiaApp({
             render: () => h(App, props),
         })
             .use(plugin)
+            .use(vuetify)
             .mount(el);
     },
 });
@@ -915,6 +947,24 @@ services:
     networks:
       - backend
 
+  # ------------------------------------------------
+  # pgAdmin
+  # ------------------------------------------------
+
+  pgadmin:
+    image: dpage/pgadmin4:9.19
+    container_name: stablemanager-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@stablemanager.local}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-stablemanager-dev}
+    ports:
+      - "127.0.0.1:${PGADMIN_LISTEN_PORT:-5050}:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+
 networks:
   backend:
     driver: bridge
@@ -926,6 +976,7 @@ volumes:
   node_modules_data:
   storage_data:
   bootstrap_cache:
+  pgadmin_data: 
 EOF
 
 # ==================================================
