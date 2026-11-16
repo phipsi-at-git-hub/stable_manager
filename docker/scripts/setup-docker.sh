@@ -763,7 +763,7 @@ services:
     volumes:
       - .:/var/www/html
       - vendor_data:/var/www/html/vendor
-      - storage_data:/var/www/html/storage
+      # - storage_data:/var/www/html/storage
       - bootstrap_cache:/var/www/html/bootstrap/cache
       - node_modules_data:/var/www/html/node_modules
     env_file:
@@ -819,7 +819,7 @@ services:
       - "8080:80"
     volumes:
       - .:/var/www/html:ro
-      - storage_data:/var/www/html/storage:ro
+      # - storage_data:/var/www/html/storage:ro
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       app:
@@ -903,7 +903,7 @@ services:
     volumes:
       - .:/var/www/html
       - vendor_data:/var/www/html/vendor
-      - storage_data:/var/www/html/storage
+      # - storage_data:/var/www/html/storage
       - bootstrap_cache:/var/www/html/bootstrap/cache
     env_file:
       - .env
@@ -936,7 +936,7 @@ services:
     volumes:
       - .:/var/www/html
       - vendor_data:/var/www/html/vendor
-      - storage_data:/var/www/html/storage
+      # - storage_data:/var/www/html/storage
       - bootstrap_cache:/var/www/html/bootstrap/cache
     env_file:
       - .env
@@ -994,7 +994,7 @@ volumes:
   redis_data:
   vendor_data:
   node_modules_data:
-  storage_data:
+  # storage_data:
   bootstrap_cache:
   pgadmin_data: 
 EOF
