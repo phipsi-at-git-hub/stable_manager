@@ -182,38 +182,29 @@ EOF
 # ==================================================
 
 write_file resources/js/app.ts <<'EOF'
-import { createApp, h } from 'vue';
-import type { Component, Plugin } from 'vue';
+import { createApp, h, type DefineComponent } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 
-interface InertiaSetupOptions {
-    el: HTMLElement;
-    App: Component;
-    props: Record<string, unknown>;
-    plugin: Plugin;
-}
+const pages = import.meta.glob<{ default: DefineComponent }>(
+    './Modules/**/*.vue',
+    {
+        eager: true,
+    },
+);
 
 createInertiaApp({
-    resolve: (name: string) => {
-        const pages = import.meta.glob('./Modules/**/*.vue', {
-            eager: true,
-        });
-
-        const page = pages[`./Modules/${name}.vue`];
+    resolve: (name) => {
+        const path = `./Modules/${name}.vue`;
+        const page = pages[path];
 
         if (!page) {
-            throw new Error(`Inertia page not found: ${name}`);
+            throw new Error(`Inertia page not found: ${path}`);
         }
 
-        return page;
+        return page.default;
     },
 
-    setup({
-        el,
-        App,
-        props,
-        plugin,
-    }: InertiaSetupOptions) {
+    setup({ el, App, props, plugin }) {
         createApp({
             render: () => h(App, props),
         })
