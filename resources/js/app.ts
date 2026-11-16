@@ -1,19 +1,29 @@
-import { createApp, h } from 'vue';
+import { createApp, DefineComponent, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
+
+const pages = import.meta.glob<{ default: DefineComponent }>(
+    './Modules/**/*.vue',
+    {
+        eager: true,
+    }
+);
 
 createInertiaApp({
     resolve: (name) => {
-        const pages = import.meta.glob('./Modules/**/*.vue', { eager: true });
-        const page = pages[`./Modules/${name}.vue`];
+        const path = `./Modules/${name}.vue`;
+        const page = pages[path];
 
         if (!page) {
-            throw new Error(`Inertia page not found: ${name}`);
+            throw new Error(`Inertia page not found: ${path}`);
         }
 
-        return page;
+        return page.default;
     },
+
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
+        createApp({
+            render: () => h(App, props),
+        })
             .use(plugin)
             .mount(el);
     },

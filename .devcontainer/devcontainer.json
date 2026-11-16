@@ -1,0 +1,26 @@
+{
+    "name": "StableManager Development",
+    "dockerComposeFile": "../compose.yaml",
+    "service": "app",
+    "workspaceFolder": "/var/www/html",
+    "shutdownAction": "none",
+    "overrideCommand": false,
+    "forwardPorts": [
+        8080,
+        5173,
+        8025
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "Vue.volar",
+                "ms-azuretools.vscode-docker"
+            ],
+            "settings": {
+                "php.validate.executablePath": "/usr/local/bin/php",
+                "typescript.tsdk": "node_modules/typescript/lib"
+            }
+        }
+    }
+}

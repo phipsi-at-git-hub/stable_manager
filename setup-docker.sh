@@ -11,6 +11,10 @@ write_file() {
     echo "Erstellt: $file"
 }
 
+# ==================================================
+# Composer
+# ==================================================
+
 write_file composer.json <<'EOF'
 {
     "$schema": "https://getcomposer.org/schema.json",
@@ -67,6 +71,10 @@ write_file composer.json <<'EOF'
 }
 EOF
 
+# ==================================================
+# Frontend dependencies
+# ==================================================
+
 write_file package.json <<'EOF'
 {
     "name": "stablemanager",
@@ -79,6 +87,7 @@ write_file package.json <<'EOF'
     "devDependencies": {
         "@vitejs/plugin-vue": "^6.0.0",
         "laravel-vite-plugin": "^2.0.0",
+        "typescript": "^5.9.0",
         "vite": "^7.0.0"
     },
     "dependencies": {
@@ -115,17 +124,81 @@ export default defineConfig({
 });
 EOF
 
-write_file resources/css/app.css <<'EOF'
-@import "tailwindcss";
+# ==================================================
+# TypeScript
+# ==================================================
+
+write_file tsconfig.json <<'EOF'
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "strict": true,
+        "jsx": "preserve",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
+        "skipLibCheck": true,
+        "lib": [
+            "ESNext",
+            "DOM",
+            "DOM.Iterable"
+        ],
+        "types": [
+            "vite/client"
+        ]
+    },
+    "include": [
+        "resources/js/**/*.ts",
+        "resources/js/**/*.d.ts",
+        "resources/js/**/*.vue",
+        "vite.config.ts"
+    ]
+}
 EOF
+
+write_file resources/js/env.d.ts <<'EOF'
+/// <reference types="vite/client" />
+
+declare module '*.vue' {
+    import type { DefineComponent } from 'vue';
+
+    const component: DefineComponent<
+        Record<string, unknown>,
+        Record<string, unknown>,
+        unknown
+    >;
+
+    export default component;
+}
+EOF
+
+# ==================================================
+# Frontend entry point
+# ==================================================
 
 write_file resources/js/app.ts <<'EOF'
 import { createApp, h } from 'vue';
+import type { Component, Plugin } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 
+interface InertiaSetupOptions {
+    el: HTMLElement;
+    App: Component;
+    props: Record<string, unknown>;
+    plugin: Plugin;
+}
+
 createInertiaApp({
-    resolve: (name) => {
-        const pages = import.meta.glob('./Modules/**/*.vue', { eager: true });
+    resolve: (name: string) => {
+        const pages = import.meta.glob('./Modules/**/*.vue', {
+            eager: true,
+        });
+
         const page = pages[`./Modules/${name}.vue`];
 
         if (!page) {
@@ -134,13 +207,50 @@ createInertiaApp({
 
         return page;
     },
-    setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
+
+    setup({
+        el,
+        App,
+        props,
+        plugin,
+    }: InertiaSetupOptions) {
+        createApp({
+            render: () => h(App, props),
+        })
             .use(plugin)
             .mount(el);
     },
 });
 EOF
+
+# ==================================================
+# CSS
+# ==================================================
+
+write_file resources/css/app.css <<'EOF'
+:root {
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+    min-height: 100%;
+    margin: 0;
+}
+EOF
+
+# ==================================================
+# Laravel Blade root view
+# ==================================================
 
 write_file resources/views/app.blade.php <<'EOF'
 <!DOCTYPE html>
@@ -158,8 +268,13 @@ write_file resources/views/app.blade.php <<'EOF'
 </html>
 EOF
 
+# ==================================================
+# PHP entrypoint
+# ==================================================
+
 write_file docker/php/entrypoint.sh <<'EOF'
 #!/bin/sh
+
 set -eu
 
 cd /var/www/html
@@ -169,12 +284,21 @@ mkdir -p \
     storage/app/public \
     storage/framework/cache \
     storage/framework/sessions \
+    storage/framework/testing \
     storage/framework/views \
     storage/logs \
     bootstrap/cache
 
+chown -R www-data:www-data storage bootstrap/cache
+
+chmod -R ug+rwX storage bootstrap/cache
+
 exec "$@"
 EOF
+
+# ==================================================
+# PHP configuration
+# ==================================================
 
 write_file docker/php/conf.d/app.ini <<'EOF'
 expose_php=Off
@@ -219,6 +343,10 @@ clear_env = no
 catch_workers_output = yes
 EOF
 
+# ==================================================
+# Nginx development configuration
+# ==================================================
+
 write_file docker/nginx/default.conf <<'EOF'
 server {
     listen 80;
@@ -259,6 +387,10 @@ server {
 }
 EOF
 
+# ==================================================
+# Nginx production configuration
+# ==================================================
+
 write_file docker/nginx/production.conf <<'EOF'
 server {
     listen 80;
@@ -295,12 +427,17 @@ server {
 }
 EOF
 
+# ==================================================
+# Dockerfile
+# ==================================================
+
 write_file Dockerfile <<'EOF'
 # syntax=docker/dockerfile:1.7
 
 # --------------------------------------------------
 # PHP base
 # --------------------------------------------------
+
 FROM php:8.5-fpm-bookworm AS php-base
 
 WORKDIR /var/www/html
@@ -325,7 +462,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         gd \
         intl \
         mbstring \
-        opcache \
         pcntl \
         pdo_pgsql \
         zip \
@@ -342,6 +478,7 @@ COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 # --------------------------------------------------
 # Official Laravel application skeleton
 # --------------------------------------------------
+
 FROM composer:2 AS laravel-scaffold
 
 RUN composer create-project laravel/laravel:^13.0 /opt/laravel \
@@ -349,23 +486,66 @@ RUN composer create-project laravel/laravel:^13.0 /opt/laravel \
     --prefer-dist
 
 # --------------------------------------------------
-# Resolve PHP dependencies once
+# Resolve PHP dependencies
+#
+# IMPORTANT:
+# - A valid existing lock file is respected.
+# - A missing or outdated lock file is regenerated.
+# - Development dependencies are included in this stage.
+# - Composer scripts are deferred until the application
+#   files and Laravel skeleton are present.
 # --------------------------------------------------
+
 FROM php-base AS composer-dependencies
 
 WORKDIR /opt/dependencies
 
-COPY composer.json ./
+COPY . /opt/dependencies/
 
-RUN composer update \
+RUN if [ -f composer.lock ] \
+    && composer validate --no-check-publish --no-check-all; then \
+        composer install \
+            --no-interaction \
+            --prefer-dist \
+            --no-scripts \
+            --no-progress; \
+    else \
+        composer update \
+            --no-interaction \
+            --prefer-dist \
+            --no-scripts \
+            --no-progress; \
+    fi
+
+# --------------------------------------------------
+# Production PHP dependencies
+#
+# Production gets its own vendor directory.
+# It must never reuse the development vendor directory.
+# --------------------------------------------------
+
+FROM php-base AS composer-production-dependencies
+
+WORKDIR /opt/production-dependencies
+
+COPY --from=composer-dependencies \
+    /opt/dependencies/composer.json ./composer.json
+
+COPY --from=composer-dependencies \
+    /opt/dependencies/composer.lock ./composer.lock
+
+RUN composer install \
+    --no-dev \
     --no-interaction \
     --prefer-dist \
     --no-scripts \
-    --no-progress
+    --no-progress \
+    --optimize-autoloader
 
 # --------------------------------------------------
 # Frontend dependencies and production assets
 # --------------------------------------------------
+
 FROM node:26-alpine AS frontend-build
 
 WORKDIR /var/www/html
@@ -381,6 +561,7 @@ RUN npm run build
 # --------------------------------------------------
 # Development image
 # --------------------------------------------------
+
 FROM php-base AS development
 
 ENV APP_ENV=local
@@ -390,15 +571,33 @@ COPY --from=laravel-scaffold /opt/laravel /var/www/html
 
 COPY . /var/www/html
 
-COPY --from=composer-dependencies /opt/dependencies/vendor /var/www/html/vendor
-COPY --from=composer-dependencies /opt/dependencies/composer.lock /opt/stablemanager/composer.lock
+COPY --from=composer-dependencies \
+    /opt/dependencies/vendor /var/www/html/vendor
 
-COPY docker/php/conf.d/development.ini /usr/local/etc/php/conf.d/zz-development.ini
+COPY --from=composer-dependencies \
+    /opt/dependencies/composer.lock /opt/stablemanager/composer.lock
+
+# Never carry Laravel package discovery caches from
+# another dependency installation into this image.
+
+RUN rm -f \
+        bootstrap/cache/packages.php \
+        bootstrap/cache/services.php \
+    && mkdir -p \
+        storage/app/private \
+        storage/app/public \
+        storage/framework/cache \
+        storage/framework/sessions \
+        storage/framework/views \
+        storage/logs \
+        bootstrap/cache
+
+COPY docker/php/conf.d/development.ini \
+    /usr/local/etc/php/conf.d/zz-development.ini
+
 COPY docker/php/entrypoint.sh /usr/local/bin/entrypoint
 
-RUN chmod +x /usr/local/bin/entrypoint \
-    && mkdir -p storage/framework/cache storage/framework/sessions \
-       storage/framework/views storage/logs bootstrap/cache
+RUN chmod +x /usr/local/bin/entrypoint
 
 ENTRYPOINT ["entrypoint"]
 CMD ["php-fpm"]
@@ -406,6 +605,7 @@ CMD ["php-fpm"]
 # --------------------------------------------------
 # Production PHP image
 # --------------------------------------------------
+
 FROM php-base AS production
 
 ENV APP_ENV=production
@@ -415,12 +615,18 @@ COPY --from=laravel-scaffold /opt/laravel /var/www/html
 
 COPY . /var/www/html
 
-COPY --from=composer-dependencies /opt/dependencies/vendor /var/www/html/vendor
+# Replace any lock file from the build context with
+# the validated lock file generated by the dependency stage.
 
-COPY docker/php/conf.d/production.ini /usr/local/etc/php/conf.d/zz-production.ini
-COPY docker/php/entrypoint.sh /usr/local/bin/entrypoint
+COPY --from=composer-dependencies \
+    /opt/dependencies/composer.lock /var/www/html/composer.lock
 
-RUN chmod +x /usr/local/bin/entrypoint \
+COPY --from=composer-production-dependencies \
+    /opt/production-dependencies/vendor /var/www/html/vendor
+
+RUN rm -f \
+        bootstrap/cache/packages.php \
+        bootstrap/cache/services.php \
     && mkdir -p \
         storage/app/private \
         storage/app/public \
@@ -428,7 +634,14 @@ RUN chmod +x /usr/local/bin/entrypoint \
         storage/framework/sessions \
         storage/framework/views \
         storage/logs \
-        bootstrap/cache \
+        bootstrap/cache
+
+COPY docker/php/conf.d/production.ini \
+    /usr/local/etc/php/conf.d/zz-production.ini
+
+COPY docker/php/entrypoint.sh /usr/local/bin/entrypoint
+
+RUN chmod +x /usr/local/bin/entrypoint \
     && php artisan package:discover --ansi \
     && chown -R www-data:www-data storage bootstrap/cache
 
@@ -438,19 +651,40 @@ CMD ["php-fpm"]
 # --------------------------------------------------
 # Production web image
 # --------------------------------------------------
+
 FROM nginx:1.28-alpine AS web-production
 
 COPY docker/nginx/production.conf /etc/nginx/conf.d/default.conf
-COPY --from=production /var/www/html/public /var/www/html/public
-COPY --from=frontend-build /var/www/html/public/build /var/www/html/public/build
+
+COPY --from=production \
+    /var/www/html/public /var/www/html/public
+
+COPY --from=frontend-build \
+    /var/www/html/public/build /var/www/html/public/build
 
 EXPOSE 80
 EOF
+
+# ==================================================
+# Docker Compose - Development
+# ==================================================
 
 write_file compose.yaml <<'EOF'
 name: stablemanager
 
 services:
+
+  # ------------------------------------------------
+  # Bootstrap
+  #
+  # Creates the Laravel skeleton in the host project
+  # directory and copies the generated Composer lock
+  # file into the project.
+  #
+  # IMPORTANT: The lock file is overwritten deliberately.
+  # cp -n would preserve an outdated lock file.
+  # ------------------------------------------------
+
   bootstrap:
     image: stablemanager-app:development
     build:
@@ -462,7 +696,7 @@ services:
       - -c
       - |
         cp -an /opt/laravel/. /workspace/
-        cp -n /opt/stablemanager/composer.lock /workspace/composer.lock || true
+        cp -f /opt/stablemanager/composer.lock /workspace/composer.lock
         mkdir -p /workspace/storage/framework/cache \
                  /workspace/storage/framework/sessions \
                  /workspace/storage/framework/views \
@@ -471,6 +705,10 @@ services:
     volumes:
       - .:/workspace
     restart: "no"
+
+  # ------------------------------------------------
+  # Laravel application
+  # ------------------------------------------------
 
   app:
     image: stablemanager-app:development
@@ -484,6 +722,7 @@ services:
       - vendor_data:/var/www/html/vendor
       - storage_data:/var/www/html/storage
       - bootstrap_cache:/var/www/html/bootstrap/cache
+      - node_modules_data:/var/www/html/node_modules
     env_file:
       - .env
     environment:
@@ -497,10 +736,15 @@ services:
       - sh
       - -c
       - |
+        composer validate --no-check-publish
         composer install --no-interaction --prefer-dist
         if ! grep -q '^APP_KEY=base64:' .env; then
           php artisan key:generate --force
         fi
+
+        php artisan config:clear
+        php artisan package:discover --ansi
+
         exec php-fpm
     depends_on:
       bootstrap:
@@ -511,14 +755,19 @@ services:
         condition: service_healthy
     healthcheck:
       test:
-        - CMD-SHELL
-        - php -r '$$s=@fsockopen("127.0.0.1",9000); exit($$s ? 0 : 1);'
+        - CMD
+        - php-fpm
+        - -t
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 40s
     networks:
       - backend
+
+  # ------------------------------------------------
+  # Nginx
+  # ------------------------------------------------
 
   web:
     image: nginx:1.28-alpine
@@ -534,6 +783,10 @@ services:
         condition: service_healthy
     networks:
       - backend
+
+  # ------------------------------------------------
+  # Vite development server
+  # ------------------------------------------------
 
   vite:
     image: node:26-alpine
@@ -552,6 +805,10 @@ services:
         npm run dev -- --host 0.0.0.0
     networks:
       - backend
+
+  # ------------------------------------------------
+  # PostgreSQL
+  # ------------------------------------------------
 
   db:
     image: postgres:18-alpine
@@ -574,6 +831,10 @@ services:
     networks:
       - backend
 
+  # ------------------------------------------------
+  # Redis
+  # ------------------------------------------------
+
   redis:
     image: redis:8-alpine
     restart: unless-stopped
@@ -587,6 +848,10 @@ services:
       retries: 10
     networks:
       - backend
+
+  # ------------------------------------------------
+  # Queue worker
+  # ------------------------------------------------
 
   queue:
     image: stablemanager-app:development
@@ -617,6 +882,10 @@ services:
     networks:
       - backend
 
+  # ------------------------------------------------
+  # Scheduler
+  # ------------------------------------------------
+
   scheduler:
     image: stablemanager-app:development
     restart: unless-stopped
@@ -643,6 +912,10 @@ services:
     networks:
       - backend
 
+  # ------------------------------------------------
+  # Mailpit
+  # ------------------------------------------------
+
   mailpit:
     image: axllent/mailpit:v1.27
     restart: unless-stopped
@@ -664,10 +937,15 @@ volumes:
   bootstrap_cache:
 EOF
 
+# ==================================================
+# Docker Compose - Production
+# ==================================================
+
 write_file compose.production.yaml <<'EOF'
 name: stablemanager
 
 services:
+
   app:
     image: stablemanager-app:production
     build:
@@ -694,8 +972,9 @@ services:
         condition: service_healthy
     healthcheck:
       test:
-        - CMD-SHELL
-        - php -r '$$s=@fsockopen("127.0.0.1",9000); exit($$s ? 0 : 1);'
+        - CMD
+        - php-fpm
+        - -t
       interval: 10s
       timeout: 5s
       retries: 10
@@ -814,6 +1093,10 @@ volumes:
   storage_data:
 EOF
 
+# ==================================================
+# Docker ignore
+# ==================================================
+
 write_file .dockerignore <<'EOF'
 .git
 .gitignore
@@ -829,6 +1112,8 @@ write_file .dockerignore <<'EOF'
 /public/build
 /public/hot
 
+/bootstrap/cache/*.php
+
 /storage/logs/*
 /storage/framework/cache/*
 /storage/framework/sessions/*
@@ -842,8 +1127,22 @@ write_file .dockerignore <<'EOF'
 docker-compose.override.yml
 EOF
 
+# ==================================================
+# Remove vite.config.js and resources/js/app.js
+# ==================================================
+
+rm -f resources/js/app.js
+rm -f vite.config.js
+
+# ==================================================
+# Permissions
+# ==================================================
+
 chmod +x docker/php/entrypoint.sh
 
 echo
 echo "Docker-Konfigurationsdateien wurden geschrieben."
+echo "Composer-Abhängigkeiten werden beim Docker-Build aufgelöst."
+echo "Die generierte composer.lock wird durch den Bootstrap-Service"
+echo "in das Projektverzeichnis übernommen."
 echo "Bestehende Modulverzeichnisse wurden nicht gelöscht."
