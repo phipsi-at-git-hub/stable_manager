@@ -118,7 +118,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/app.css',
-                'resources/js/app.ts',
+                'resources/js/app/app.ts',
             ],
             refresh: true,
         }),
@@ -192,36 +192,55 @@ declare module '*.vue' {
 EOF
 
 # ==================================================
+# Frontend application structure
+# ==================================================
+
+mkdir -p \
+    resources/js/app/Core/Components \
+    resources/js/app/Core/Composables \
+    resources/js/app/Core/Layouts \
+    resources/js/app/Core/Types \
+    resources/js/app/Core/UI \
+    resources/js/app/Core/Utils \
+    resources/js/app/Modules \
+    resources/js/app/Shared
+
+# ==================================================
+# Vuetify configuration
+# ==================================================
+
+write_file resources/js/app/Core/UI/Vuetify.ts <<'EOF'
+import { createVuetify } from "vuetify";
+
+export function createStableManagerVuetify() {
+    return createVuetify({
+        theme: {
+            defaultTheme: 'stableManagerLight',
+            themes: {
+                stableManagerLight: {
+                    dark: false,
+                }
+            }
+        }
+    });
+}
+EOF
+
+# ==================================================
 # Frontend entry point
 # ==================================================
 
-write_file resources/js/app.ts <<'EOF'
+write_file resources/js/app/app.ts <<'EOF'
 import { createApp, h, type DefineComponent } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
-import { createVuetify } from 'vuetify';
+
+import { createStableManagerVuetify } from './Core/UI/Vuetify';
 
 import 'vuetify/styles';
 import '@mdi/font/css/materialdesignicons.css';
+import '../../css/app.css';
 
-const vuetify = createVuetify({
-    theme: {
-        defaultTheme: 'stableManagerLight',
-        themes: {
-            stableManagerLight: {
-                dark: false,
-                colors: {
-                    primary: '#345B4A',
-                    secondary: '#718579',
-                    background: '#F7F8F6',
-                    surface: '#FFFFFF',
-                    error: '#B3261E',
-                    success: '#397653',
-                    warning: '#B7791F',
-                },
-            },
-        },
-    },
-});
+const vuetify = createStableManagerVuetify();
 
 const pages = import.meta.glob<{ default: DefineComponent }>(
     './Modules/**/*.vue',
@@ -289,7 +308,7 @@ write_file resources/views/app.blade.php <<'EOF'
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    @vite(['resources/css/app.css', 'resources/js/app.ts'])
+    @vite(['resources/css/app.css', 'resources/js/app/app.ts'])
     @inertiaHead
 </head>
 <body>

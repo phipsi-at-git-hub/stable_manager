@@ -5,7 +5,7 @@ import { createStableManagerVuetify } from './Core/UI/Vuetify';
 
 import 'vuetify/styles';
 import '@mdi/font/css/materialdesignicons.css';
-import '../css/app.css';
+import '../../css/app.css';
 
 const vuetify = createStableManagerVuetify();
 
