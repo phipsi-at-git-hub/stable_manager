@@ -1,0 +1,23 @@
+html,
+body,
+#app {
+    min-height: 100%;
+}
+
+body {
+    background: var(--sm-theme-background);
+}
+
+#app {
+    isolation: isolate;
+}
+
+:focus-visible {
+    outline: 2px solid var(--sm-color-primary);
+    outline-offset: 2px;
+}
+
+::selection {
+    color: var(--sm-color-on-primary);
+    background: var(--sm-color-primary);
+}

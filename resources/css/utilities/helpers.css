@@ -1,0 +1,25 @@
+.sm-text-muted {
+    color: var(--sm-theme-text-muted);
+}
+
+.sm-surface {
+    background: var(--sm-theme-surface);
+}
+
+.sm-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sm-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

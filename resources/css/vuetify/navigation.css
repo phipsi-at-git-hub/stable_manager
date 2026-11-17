@@ -1,0 +1,7 @@
+.v-list-item {
+    border-radius: var(--sm-radius-control);
+}
+
+.v-navigation-drawer {
+    border-color: var(--sm-theme-border);
+}

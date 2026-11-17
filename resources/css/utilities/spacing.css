@@ -1,0 +1,6 @@
+.sm-mt-2 { margin-top: var(--sm-spacing-2); }
+.sm-mt-4 { margin-top: var(--sm-spacing-4); }
+.sm-mb-2 { margin-bottom: var(--sm-spacing-2); }
+.sm-mb-4 { margin-bottom: var(--sm-spacing-4); }
+.sm-gap-2 { gap: var(--sm-spacing-2); }
+.sm-gap-4 { gap: var(--sm-spacing-4); }

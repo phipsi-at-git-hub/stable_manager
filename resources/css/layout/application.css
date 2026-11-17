@@ -1,0 +1,16 @@
+.sm-application {
+    min-height: 100vh;
+    background: var(--sm-theme-background);
+    color: var(--sm-theme-text);
+}
+
+.sm-application__body {
+    min-height: 100vh;
+}
+
+.sm-page {
+    width: 100%;
+    max-width: var(--sm-content-max-width);
+    margin-inline: auto;
+    padding: var(--sm-spacing-6);
+}

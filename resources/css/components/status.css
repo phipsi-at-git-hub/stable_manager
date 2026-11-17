@@ -1,0 +1,30 @@
+.sm-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sm-spacing-2);
+    min-height: 24px;
+    padding: 2px var(--sm-spacing-2);
+    border-radius: var(--sm-radius-pill);
+    font-size: var(--sm-font-size-sm);
+    font-weight: 500;
+}
+
+.sm-status--success {
+    color: var(--sm-color-success);
+    background: rgba(var(--sm-color-success-rgb), 0.10);
+}
+
+.sm-status--warning {
+    color: #9A5B08;
+    background: rgba(var(--sm-color-warning-rgb), 0.14);
+}
+
+.sm-status--error {
+    color: var(--sm-color-error);
+    background: rgba(var(--sm-color-error-rgb), 0.10);
+}
+
+.sm-status--info {
+    color: var(--sm-color-info);
+    background: rgba(var(--sm-color-info-rgb), 0.10);
+}

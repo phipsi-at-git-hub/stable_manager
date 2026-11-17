@@ -1,0 +1,25 @@
+/*
+ * Theme-specific semantic values.
+ * The light theme is the initial application theme.
+ * Dark mode is intentionally only a structural starting point.
+ */
+
+:root,
+[data-sm-theme="light"] {
+    color-scheme: light;
+
+    --sm-theme-background: var(--sm-color-background);
+    --sm-theme-surface: var(--sm-color-surface);
+    --sm-theme-surface-variant: var(--sm-color-surface-variant);
+    --sm-theme-text: var(--sm-color-text);
+    --sm-theme-text-muted: var(--sm-color-text-muted);
+    --sm-theme-border: var(--sm-color-border);
+}
+
+/*
+ * Reserved for a future dark theme.
+ * Add and validate the dark palette before enabling this selector.
+ */
+[data-sm-theme="dark"] {
+    color-scheme: dark;
+}

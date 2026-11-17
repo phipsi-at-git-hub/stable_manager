@@ -1,0 +1,8 @@
+.v-btn {
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+.v-btn--rounded {
+    border-radius: var(--sm-radius-control);
+}

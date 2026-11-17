@@ -1,0 +1,7 @@
+.v-field {
+    border-radius: var(--sm-radius-control);
+}
+
+.v-label {
+    font-weight: 500;
+}

@@ -1,0 +1,8 @@
+.v-table {
+    background: transparent;
+}
+
+.v-data-table {
+    border-radius: var(--sm-radius-card);
+    overflow: hidden;
+}

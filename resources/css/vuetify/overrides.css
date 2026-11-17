@@ -1,0 +1,24 @@
+/*
+ * Global Vuetify theme bridge.
+ *
+ * Vuetify emits RGB channel values for --v-theme-* variables.
+ * Keep the Vuetify theme name in sync with the theme configured in Vuetify.ts.
+ */
+.v-theme--stableManagerLight {
+    --v-theme-primary: var(--sm-color-primary-rgb);
+    --v-theme-secondary: var(--sm-color-secondary-rgb);
+    --v-theme-accent: var(--sm-color-accent-rgb);
+    --v-theme-success: var(--sm-color-success-rgb);
+    --v-theme-warning: var(--sm-color-warning-rgb);
+    --v-theme-error: var(--sm-color-error-rgb);
+    --v-theme-info: var(--sm-color-info-rgb);
+    --v-theme-background: var(--sm-color-background-rgb);
+    --v-theme-surface: var(--sm-color-surface-rgb);
+}
+
+/* Keep app-wide Vuetify surfaces aligned with the global background. */
+.v-application {
+    font-family: var(--sm-font-family);
+    background: var(--sm-theme-background);
+    color: var(--sm-theme-text);
+}

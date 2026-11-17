@@ -1,18 +1,35 @@
-:root {
-    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
+/*
+ * Stable Manager – global stylesheet entry point
+ *
+ * Keep imports in dependency order:
+ * 1. Design tokens and themes
+ * 2. Browser/application foundations
+ * 3. Application layout
+ * 4. Vuetify adaptations
+ * 5. Stable Manager-specific components
+ * 6. Utilities
+ */
 
-* {
-    box-sizing: border-box;
-}
+@import './abstracts/variables.css';
+@import './abstracts/themes.css';
 
-html,
-body,
-#app {
-    min-height: 100%;
-    margin: 0;
-}
+@import './base/reset.css';
+@import './base/typography.css';
+@import './base/global.css';
+
+@import './layout/application.css';
+@import './layout/header.css';
+@import './layout/sidebar.css';
+@import './layout/content.css';
+
+@import './vuetify/overrides.css';
+@import './vuetify/buttons.css';
+@import './vuetify/forms.css';
+@import './vuetify/cards.css';
+@import './vuetify/navigation.css';
+@import './vuetify/tables.css';
+
+@import './components/status.css';
+
+@import './utilities/spacing.css';
+@import './utilities/helpers.css';

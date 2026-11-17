@@ -1,0 +1,3 @@
+.sm-header {
+    min-height: var(--sm-header-height);
+}

@@ -1,0 +1,7 @@
+.v-card {
+    border-radius: var(--sm-radius-card);
+}
+
+.v-dialog > .v-overlay__content > .v-card {
+    border-radius: var(--sm-radius-dialog);
+}
