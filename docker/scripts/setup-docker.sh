@@ -102,6 +102,7 @@ write_file package.json <<'EOF'
         "@inertiajs/vue3": "^2.0.0",
         "@mdi/font": "^7.4.0",
         "vue": "^3.5.0",
+        "vue-i18n": "^11.0.0",
         "vuetify": "^3.0.0"
     }
 }

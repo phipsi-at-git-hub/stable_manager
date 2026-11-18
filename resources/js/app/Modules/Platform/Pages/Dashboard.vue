@@ -1,6 +1,9 @@
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n'; 
+
+const { t, locale } = useI18n();
 
 interface Horse {
     id: number
@@ -86,7 +89,10 @@ function addHorse() {
             >
                 <div class="pa-5">
                     <div class="text-h5 font-weight-bold">
-                        StableManager
+                        {{ t('application.name') }}
+                    </div>
+                    <div>
+                        Active locale: {{ locale }}
                     </div>
                     <div class="text-caption text-medium-emphasis">
                         Development Playground

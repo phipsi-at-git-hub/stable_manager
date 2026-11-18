@@ -1,0 +1,20 @@
+{
+    "application": {
+        "name": "Stable Manager", 
+        "general": {
+            "btn": {
+                "save": "Speichern",
+                "cancel": "Abbrechen",
+                "delete": "Löschen"
+            },
+            "label": {
+                "loading": "Wird geladen...", 
+                "welcome": "Willkommen beim Stable Manager", 
+                "sescription": "Deine zentrale Plattform für die Pferdeverwaltung."
+            },
+            "message": {
+                "confirm_delete": "Möchtest du diesen Eintrag wirklich löschen?"
+            }
+        }
+    }
+}
