@@ -753,18 +753,28 @@ services:
       - sh
       - -c
       - |
-        cp -an /opt/laravel/. /workspace/
-        cp -f /opt/stablemanager/composer.lock /workspace/composer.lock
+        if [ ! -f /workspace/.bootstrap-completed ]; then
+            echo "Initializing Laravel project..."
 
-        # Remove obsolete Laravel scaffold frontend files
-        rm -f /workspace/vite.config.js
-        rm -f /workspace/resources/js/app.js
+            cp -an /opt/laravel/. /workspace/
+            cp -f /opt/stablemanager/composer.lock /workspace/composer.lock
 
-        mkdir -p /workspace/storage/framework/cache \
-                 /workspace/storage/framework/sessions \
-                 /workspace/storage/framework/views \
-                 /workspace/storage/logs \
-                 /workspace/bootstrap/cache
+            # Remove obsolete Laravel scaffold frontend files
+            rm -f /workspace/vite.config.js
+            rm -f /workspace/resources/js/app.js
+
+            mkdir -p /workspace/storage/framework/cache \
+                    /workspace/storage/framework/sessions \
+                    /workspace/storage/framework/views \
+                    /workspace/storage/logs \
+                    /workspace/bootstrap/cache
+
+            touch /workspace/.bootstrap-completed
+
+            echo "Laravel project initialization completed."
+        else
+            echo "Laravel project already initialized. Skipping bootstrap."
+        fi
     volumes:
       - .:/workspace
     restart: "no"
@@ -1000,6 +1010,8 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-stablemanager-dev}
     ports:
       - "127.0.0.1:${PGADMIN_LISTEN_PORT:-5050}:80"
+    networks:
+      - backend
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     depends_on:

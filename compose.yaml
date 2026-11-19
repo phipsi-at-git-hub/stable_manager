@@ -23,18 +23,28 @@ services:
       - sh
       - -c
       - |
-        cp -an /opt/laravel/. /workspace/
-        cp -f /opt/stablemanager/composer.lock /workspace/composer.lock
-        
-        # Remove obsolete Laravel scaffold frontend files
-        rm -f /workspace/vite.config.js
-        rm -f /workspace/resources/js/app.js
+        if [ ! -f /workspace/.bootstrap-completed ]; then
+            echo "Initializing Laravel project..."
 
-        mkdir -p /workspace/storage/framework/cache \
-                 /workspace/storage/framework/sessions \
-                 /workspace/storage/framework/views \
-                 /workspace/storage/logs \
-                 /workspace/bootstrap/cache
+            cp -an /opt/laravel/. /workspace/
+            cp -f /opt/stablemanager/composer.lock /workspace/composer.lock
+
+            # Remove obsolete Laravel scaffold frontend files
+            rm -f /workspace/vite.config.js
+            rm -f /workspace/resources/js/app.js
+
+            mkdir -p /workspace/storage/framework/cache \
+                    /workspace/storage/framework/sessions \
+                    /workspace/storage/framework/views \
+                    /workspace/storage/logs \
+                    /workspace/bootstrap/cache
+
+            touch /workspace/.bootstrap-completed
+
+            echo "Laravel project initialization completed."
+        else
+            echo "Laravel project already initialized. Skipping bootstrap."
+        fi
     volumes:
       - .:/workspace
     restart: "no"
@@ -256,24 +266,46 @@ services:
       - "127.0.0.1:8025:8025"
     networks:
       - backend
+  
+  # ------------------------------------------------
+  # TableX - Database management
+  # ------------------------------------------------
+
+  tablex:
+    image: stablemanager-tablex:latest
+    build:
+      context: https://github.com/tablexdev/tablex.git#master
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5050:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - backend
 
   # ------------------------------------------------
   # pgAdmin
+  #
+  # Reserved for the production phase.
   # ------------------------------------------------
 
-  pgadmin:
-    image: dpage/pgadmin4:9.19
-    container_name: stablemanager-pgadmin
-    restart: unless-stopped
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@stablemanager.com}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-stablemanager-dev}
-    ports:
-      - "127.0.0.1:${PGADMIN_LISTEN_PORT:-5050}:80"
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    depends_on:
-      - db
+#  pgadmin:
+#    image: dpage/pgadmin4:9.19
+#    container_name: stablemanager-pgadmin
+#    restart: unless-stopped
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@stablemanager.com}
+#      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-stablemanager-dev}
+#    ports:
+#      - "127.0.0.1:${PGADMIN_LISTEN_PORT:-5050}:80"
+#    networks:
+#      - backend
+#    volumes:
+#      - pgadmin_data:/var/lib/pgadmin
+#    depends_on:
+#      - db
 
 networks:
   backend:

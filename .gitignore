@@ -40,6 +40,9 @@ compose.production.yaml
 /bootstrap/cache/*
 !/bootstrap/cache/.gitkeep
 
+# Bootstrap
+.bootstrap-completed
+
 # Testing
 .phpactor.json
 .phpunit.cache/
