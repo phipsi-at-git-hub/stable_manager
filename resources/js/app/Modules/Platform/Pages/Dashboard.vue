@@ -5,6 +5,21 @@ import { useI18n } from 'vue-i18n';
 
 const { t, locale } = useI18n();
 
+const localTime = (new Date()).getHours();
+var timeOfDay = 'Day';  // Fallback
+if (localTime >= 0 && localTime < 6) {
+    timeOfDay = 'Night';
+}
+if (localTime >= 6 && localTime < 12) {
+    timeOfDay = 'Morning'; 
+} 
+if (localTime >= 12 && localTime < 18) {
+    timeOfDay = 'Afternoon';
+} 
+if (localTime >= 18 && localTime < 24) {
+    timeOfDay = 'Evening';
+}
+
 interface Horse {
     id: number
     name: string
@@ -99,6 +114,16 @@ function addHorse() {
                     </div>
                 </div>
 
+                <v-divider class="my-4" />
+
+                <div class="text-subtitle-2 mb-2">
+                    Fallback test
+                </div>
+
+                <div>
+                    {{ t('application.general.label.fallbackTest') }}
+                </div>
+
                 <v-divider />
 
                 <v-list nav class="pa-3">
@@ -190,10 +215,10 @@ function addHorse() {
                     <div class="d-flex flex-wrap align-center justify-space-between ga-3 mb-6">
                         <div>
                             <div class="text-h4 font-weight-bold">
-                                Good morning!
+                                {{ t('application.general.label.good' + timeOfDay) }}
                             </div>
                             <div class="text-body-2 text-medium-emphasis mt-1">
-                                Welcome to your StableManager dashboard.
+                                {{ t('application.general.label.welcome') }}
                             </div>
                         </div>
 

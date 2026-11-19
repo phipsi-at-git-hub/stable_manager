@@ -9,8 +9,13 @@
             },
             "label": {
                 "loading": "Loading...", 
+                "goodMorning": "Good Morning",
+                "goodAfternoon": "Good Afternoon",
+                "goodEvening": "Good Evening",
+                "goodNight": "Good Night",
                 "welcome": "Welcome to Stable Manager", 
-                "description": "Your central platfrom for horse management"
+                "description": "Your central platfrom for horse management", 
+                "fallbackTest": "This text comes from the English fallback locale."
             },
             "message": {
                 "confirm_delete": "Are you sure you want to delete this item?"

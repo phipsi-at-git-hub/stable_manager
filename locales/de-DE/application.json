@@ -10,7 +10,7 @@
             "label": {
                 "loading": "Wird geladen...", 
                 "welcome": "Willkommen beim Stable Manager", 
-                "sescription": "Deine zentrale Plattform für die Pferdeverwaltung."
+                "description": "Deine zentrale Plattform für die Pferdeverwaltung."
             },
             "message": {
                 "confirm_delete": "Möchtest du diesen Eintrag wirklich löschen?"
