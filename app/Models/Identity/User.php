@@ -1,0 +1,191 @@
+<?php
+// app/Models/Identity/User.php 
+
+namespace App\Models\Identity;
+
+use App\Enums\Identity\UserStatus;
+use App\Models\Concerns\HasAuditUsers;
+use App\Models\People\Person;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
+/**
+ * User
+ */
+class User extends Authenticatable
+{
+    use HasFactory;
+    use HasUuids;
+    use Notifiable;
+    use HasAuditUsers;
+
+    protected $fillable = [
+        'person_id',
+        'username',
+        'email',
+        'password',
+        'preferred_locale',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * casts
+     *
+     * @return array
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'last_login_at' => 'datetime',
+            'password' => 'hashed',
+            'status' => UserStatus::class,
+        ];
+    }
+
+    /**
+     * person
+     *
+     * @return BelongsTo
+     */
+    public function person(): BelongsTo
+    {
+        return $this->belongsTo(Person::class);
+    }
+
+    /**
+     * User role methods
+     */
+
+    /**
+     * roles
+     *
+     * @return BelongsToMany
+     */
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            UserRole::class,
+            'role_user',
+            'user_id',
+            'role_id'
+        )
+            ->using(RoleUser::class)
+            ->withPivot([
+                'created_by',
+                'updated_by',
+            ])
+            ->withTimestamps();
+    }
+
+    /**
+     * hasRole
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role): bool
+    {
+        return $this->roles()
+            ->where('name', $role)
+            ->exists();
+    }
+
+    /**
+     * hasAnyRole
+     *
+     * @param array $roles
+     * @return bool
+     */
+    public function hasAnyRole(array $roles): bool
+    {
+        return $this->roles()
+            ->whereIn('name', $roles)
+            ->exists();
+    }
+
+    /**
+     * isSuperAdmin
+     *
+     * @return bool
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole(UserRole::SUPER_ADMIN);
+    }
+
+    /**
+     * isAdmin
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->hasAnyRole([
+            UserRole::SUPER_ADMIN,
+            UserRole::ADMIN,
+        ]);
+    }
+
+    /**
+     * User status methods
+     */
+
+    /**
+     * isActive
+     *
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->status === UserStatus::ACTIVE;
+    }
+
+    /**
+     * isInactive
+     *
+     * @return bool
+     */
+    public function isInactive(): bool
+    {
+        return $this->status === UserStatus::INACTIVE;
+    }
+
+    /**
+     * isBlocked
+     *
+     * @return bool
+     */
+    public function isBlocked(): bool
+    {
+        return $this->status === UserStatus::BLOCKED;
+    }
+
+    /**
+     * isBanned
+     *
+     * @return bool
+     */
+    public function isBanned(): bool
+    {
+        return $this->status === UserStatus::BANNED;
+    }
+
+    /**
+     * isClosed
+     *
+     * @return bool
+     */
+    public function isClosed(): bool
+    {
+        return $this->status === UserStatus::CLOSED;
+    }
+}
