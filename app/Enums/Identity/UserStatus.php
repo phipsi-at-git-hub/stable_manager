@@ -1,5 +1,5 @@
 <?php
-// app/Models/Identity/UserStatus.php 
+// app/Enums/Identity/UserStatus.php 
 
 namespace App\Enums\Identity;
 
