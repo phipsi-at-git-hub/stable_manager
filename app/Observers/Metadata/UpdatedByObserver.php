@@ -1,13 +1,22 @@
 <?php
-// app/Observer/Audit/AuditUserObserver.php 
+// app/Observers/Metadata/UpdatedByObserver.php 
 
-namespace App\Observers\Audit;
+namespace App\Observers\Metadata;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class AuditUserObserver
+/**
+ * UpdatedByObserver
+ */
+class UpdatedByObserver
 {
+    /**
+     * creating
+     *
+     * @param Model $model
+     * @return void
+     */
     public function creating(Model $model): void
     {
         $userId = Auth::id();
@@ -16,10 +25,15 @@ class AuditUserObserver
             return;
         }
 
-        $model->setAttribute('created_by', $userId);
-        $model->setAttribute('updated_by', $userId);
+        $model->updated_by = $userId;
     }
 
+    /**
+     * updating
+     *
+     * @param Model $model
+     * @return void
+     */
     public function updating(Model $model): void
     {
         $userId = Auth::id();
@@ -28,6 +42,6 @@ class AuditUserObserver
             return;
         }
 
-        $model->setAttribute('updated_by', $userId);
+        $model->updated_by = $userId;
     }
 }
