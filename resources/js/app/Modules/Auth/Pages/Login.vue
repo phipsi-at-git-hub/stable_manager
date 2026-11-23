@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue';
 import { Head, useForm } from '@inertiajs/vue3';
-//import AuthLayout from '@/Modules/Auth/Layouts/AuthLayout.vue';
-import AuthLayout from '../Layouts/AuthLayout.vue';
+//import AuthLayout from '../Layouts/AuthLayout.vue';
+import AuthLayout from '@Modules/Auth/Layouts/AuthLayout.vue';
 
 const passwordVisible = ref(false);
 

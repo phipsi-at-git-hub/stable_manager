@@ -19,7 +19,12 @@
         ],
         "types": [
             "vite/client"
-        ]
+        ], 
+        "paths": {
+            "@Core/*": ["resources/js/app/Core/*"], 
+            "@Modules/*": ["resources/js/app/Modules/*"], 
+            "@Shared/*": ["resources/js/app/Shared/*"]
+        }
     },
     "include": [
         "resources/js/**/*.ts",
