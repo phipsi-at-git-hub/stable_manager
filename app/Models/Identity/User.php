@@ -5,11 +5,13 @@ namespace App\Models\Identity;
 
 use App\Enums\Identity\UserStatus;
 use App\Models\Concerns\HasAuditUsers;
+use App\Models\People\Email;
 use App\Models\People\Person;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne; 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -26,7 +28,7 @@ class User extends Authenticatable
     protected $fillable = [
         'person_id',
         'username',
-        'email',
+        'login_email_id',
         'password',
         'preferred_locale',
     ];
@@ -45,7 +47,6 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'last_login_at' => 'datetime',
             'password' => 'hashed',
             'status' => UserStatus::class,
         ];
@@ -53,12 +54,38 @@ class User extends Authenticatable
 
     /**
      * person
+     * 
+     * Person associated with the user. 
      *
      * @return BelongsTo
      */
     public function person(): BelongsTo
     {
         return $this->belongsTo(Person::class);
+    }
+    
+    /**
+     * loginEmail
+     * 
+     * Login email associated with the user. 
+     *
+     * @return BelongsTo
+     */
+    public function loginEmail(): BelongsTo
+    {
+        return $this->belongsTo(Email::class, 'login_email_id'); 
+    }
+
+    /**
+     * statistics
+     * 
+     * Statistics associated with the user. 
+     *
+     * @return HasOne
+     */
+    public function statistics(): HasOne
+    {
+        return $this->hasOne(UserStatistic::class); 
     }
 
     /**
@@ -67,18 +94,20 @@ class User extends Authenticatable
 
     /**
      * roles
+     * 
+     * Roles assigned to the user. 
      *
      * @return BelongsToMany
      */
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(
-            UserRole::class,
+            Role::class,
             'role_user',
             'user_id',
             'role_id'
         )
-            ->using(RoleUser::class)
+            ->using(UserRole::class)
             ->withPivot([
                 'created_by',
                 'updated_by',
@@ -88,6 +117,8 @@ class User extends Authenticatable
 
     /**
      * hasRole
+     * 
+     * Check whether the user has a specific role. 
      *
      * @param string $role
      * @return bool
@@ -101,6 +132,8 @@ class User extends Authenticatable
 
     /**
      * hasAnyRole
+     * 
+     * Check whether the user has at least one of the specified roles. 
      *
      * @param array $roles
      * @return bool
@@ -114,24 +147,28 @@ class User extends Authenticatable
 
     /**
      * isSuperAdmin
+     * 
+     * Check whether the user is a super administrator. 
      *
      * @return bool
      */
     public function isSuperAdmin(): bool
     {
-        return $this->hasRole(UserRole::SUPER_ADMIN);
+        return $this->hasRole(Role::SUPER_ADMIN);
     }
 
     /**
      * isAdmin
+     * 
+     * Check whether the user is an administrator. 
      *
      * @return bool
      */
     public function isAdmin(): bool
     {
         return $this->hasAnyRole([
-            UserRole::SUPER_ADMIN,
-            UserRole::ADMIN,
+            Role::SUPER_ADMIN,
+            Role::ADMIN,
         ]);
     }
 
@@ -141,6 +178,8 @@ class User extends Authenticatable
 
     /**
      * isActive
+     * 
+     * Check whether the user is active. 
      *
      * @return bool
      */
@@ -151,6 +190,8 @@ class User extends Authenticatable
 
     /**
      * isInactive
+     * 
+     * Check whether the user is inactive. 
      *
      * @return bool
      */
@@ -161,6 +202,8 @@ class User extends Authenticatable
 
     /**
      * isBlocked
+     * 
+     * Check whether the user is blocked. 
      *
      * @return bool
      */
@@ -171,6 +214,8 @@ class User extends Authenticatable
 
     /**
      * isBanned
+     * 
+     * Check whether the user is banned. 
      *
      * @return bool
      */
@@ -181,6 +226,8 @@ class User extends Authenticatable
 
     /**
      * isClosed
+     * 
+     * Check whether the user is closed. 
      *
      * @return bool
      */

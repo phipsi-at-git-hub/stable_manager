@@ -23,6 +23,8 @@ class SystemSetting extends Model
 
     /**
      * updatedBy
+     * 
+     * User who last updated this setting.
      *
      * @return BelongsTo
      */

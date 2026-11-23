@@ -44,6 +44,8 @@ class AuditLog extends Model
 
     /**
      * user
+     * 
+     * User who triggered this event. 
      *
      * @return BelongsTo
      */
@@ -54,6 +56,8 @@ class AuditLog extends Model
 
     /**
      * auditable
+     * 
+     * Model associated with this audit entry. 
      *
      * @return MorphTo
      */

@@ -7,6 +7,7 @@ use App\Models\Concerns\HasAuditUsers;
 use App\Models\Identity\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -40,6 +41,8 @@ class Person extends Model
 
     /**
      * user
+     * 
+     * User associated with this person.
      *
      * @return HasOne
      */
@@ -50,21 +53,73 @@ class Person extends Model
 
     /**
      * addresses
+     * 
+     * Addresses associated with this person. 
      *
      * @return HasMany
      */
-    public function addresses(): HasMany
+    public function addresses(): BelongsToMany
     {
-        return $this->hasMany(Address::class);
+        return $this->belongsToMany(
+            Address::class, 
+            'person_addresses', 
+            'person_id', 
+            'address_id'
+        )
+            ->using(PersonAddress::class)
+            ->withPivot([
+                'is_primary', 
+                'created_by', 
+                'updated_by'
+            ])
+            ->withTimestamps(); 
     }
 
     /**
      * phoneNumbers
+     * 
+     * Phone numbers associated with this person. 
      *
      * @return HasMany
      */
-    public function phoneNumbers(): HasMany
+    public function phoneNumbers(): BelongsToMany
     {
-        return $this->hasMany(PhoneNumber::class);
+        return $this->belongsToMany(
+            PhoneNumber::class, 
+            'person_phone_numbers', 
+            'person_id', 
+            'phone_number_id'
+        )
+            ->using(PersonPhoneNumber::class)
+            ->withPivot([
+                'is_primary', 
+                'created_by', 
+                'updated_by'
+            ])
+            ->withTimestamps();
+    }
+
+    /**
+     * emails
+     * 
+     * Email addresses associated with this person. 
+     *
+     * @return BelongsToMany
+     */
+    public function emails(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Email::class, 
+            'person_emails', 
+            'person_id', 
+            'email_id'
+        )
+            ->using(PersonEmail::class)
+            ->withPivot([
+                'is_primary', 
+                'created_by', 
+                'updated_by'
+            ])
+            ->withTimestamps(); 
     }
 }

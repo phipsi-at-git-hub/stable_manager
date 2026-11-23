@@ -6,7 +6,7 @@ namespace App\Models\People;
 use App\Models\Concerns\HasAuditUsers;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Address
@@ -17,7 +17,6 @@ class Address extends Model
     use HasAuditUsers;
 
     protected $fillable = [
-        'person_id',
         'street',
         'postal_code',
         'city',
@@ -26,11 +25,25 @@ class Address extends Model
 
     /**
      * person
+     * 
+     * Persons associated with this address. 
      *
-     * @return BelongsTo
+     * @return BelongsToMany
      */
-    public function person(): BelongsTo
+    public function person(): BelongsToMany
     {
-        return $this->belongsTo(Person::class);
+        return $this->belongsToMany(
+            Person::class, 
+            'person_addresses', 
+            'address_id', 
+            'person_id'
+        )
+            ->using(PersonAddress::class)
+            ->withPivot([
+                'is_primary', 
+                'created_by', 
+                'updated_by'
+            ])
+            ->withTimestamps();
     }
 }

@@ -4,49 +4,51 @@
 namespace App\Models\Identity;
 
 use App\Models\Concerns\HasAuditUsers;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class UserRole extends Model
+/**
+ * RoleUser
+ */
+class UserRole extends Pivot
 {
-    use HasUuids;
     use HasAuditUsers;
 
-    /**
-     * Available user roles
-     */
-    public const SUPER_ADMIN = 'super_admin';
-    public const ADMIN = 'admin';
-    public const USER = 'user';
-    public const TRAINER = 'trainer';
-    public const STUDENT = 'student';
-    public const CLUB_MEMBER = 'club_member';
-    public const CLUB_EMPLOYER = 'club_employer';
+    protected $table = 'user_roles';
+
+    public $incrementing = false;
+
+    public $timestamps = true;
 
     protected $fillable = [
-        'name',
-        'description',
+        'user_id',
+        'role_id',
+        'created_by',
+        'updated_by',
     ];
 
     /**
-     * users
+     * user
+     * 
+     * User associated with this role assignment. 
      *
-     * @return BelongsToMany
+     * @return BelongsTo
      */
-    public function users(): BelongsToMany
+    public function user(): BelongsTo
     {
-        return $this->belongsToMany(
-            User::class,
-            'role_user',
-            'role_id',
-            'user_id'
-        )
-            ->using(RoleUser::class)
-            ->withPivot([
-                'created_by',
-                'updated_by',
-            ])
-            ->withTimestamps();
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * role
+     * 
+     * Role associated with this assignment. 
+     *
+     * @return BelongsTo
+     */
+    public function role(): BelongsTo
+    {
+        //return $this->belongsTo(Role::class, 'role_id');
+        return $this->belongsTo(Role::class);
     }
 }
