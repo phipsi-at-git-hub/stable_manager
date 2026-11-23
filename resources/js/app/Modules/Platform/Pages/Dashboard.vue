@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n'; 
+import { router } from '@inertiajs/vue3'; 
 
 const { t, locale } = useI18n();
 
@@ -68,6 +69,10 @@ const filteredHorses = computed(() => {
             .some((value) => value.toLowerCase().includes(query)),
     )
 })
+
+function logout() {
+    router.post('/logout'); 
+}
 
 function showMessage(message: string) {
     snackbarMessage.value = message
@@ -208,6 +213,19 @@ function addHorse() {
                     <v-avatar color="primary" size="36" class="mr-4">
                         <span class="text-caption">AM</span>
                     </v-avatar>
+
+                    <v-tooltip text="Logout" location="bottom">
+                        <template #activator="{ props }">
+                            <v-btn
+                                v-bind="props"
+                                icon="mdi-logout"
+                                variant="text"
+                                class="mr-2"
+                                aria-label="Logout"
+                                @click="logout"
+                            />
+                        </template>
+                    </v-tooltip>
                 </v-app-bar>
 
                 <v-container fluid class="pa-4 pa-md-6">
