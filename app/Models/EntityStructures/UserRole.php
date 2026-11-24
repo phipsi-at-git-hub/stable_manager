@@ -1,10 +1,14 @@
 <?php
 // app/Models/Identity/UserRole.php 
 
-namespace App\Models\Identity;
+namespace App\Models\EntityStructures;
 
 use App\Models\Concerns\HasAuditUsers;
+use App\Models\Identity\User;
+use App\Models\Organizations\Club;
+use App\Models\Organizations\Stable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Concerns\HasUuids; 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -13,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class UserRole extends Pivot
 {
     use HasAuditUsers;
+    use HasUuids; 
 
     protected $table = 'user_roles';
 
@@ -23,6 +28,8 @@ class UserRole extends Pivot
     protected $fillable = [
         'user_id',
         'role_id',
+        'club_id',
+        'stable_id',
         'created_by',
         'updated_by',
     ];
@@ -30,7 +37,8 @@ class UserRole extends Pivot
     /**
      * user
      * 
-     * User associated with this role assignment. 
+     * Represents a role assignment to a user. 
+     * The assignment can be global or scoped to a club or stable.
      *
      * @return BelongsTo
      */
@@ -50,5 +58,29 @@ class UserRole extends Pivot
     {
         //return $this->belongsTo(Role::class, 'role_id');
         return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * club
+     * 
+     * Club scope of this role assignment. 
+     *
+     * @return BelongsTo
+     */
+    public function club(): BelongsTo
+    {
+        return $this->belongsTo(Club::class);
+    }
+
+    /**
+     * stable
+     * 
+     * Stable scope of this role assignment. 
+     *
+     * @return BelongsTo
+     */
+    public function stable(): BelongsTo 
+    {
+        return $this->belongsTo(Stable::class);
     }
 }

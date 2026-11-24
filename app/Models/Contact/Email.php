@@ -1,10 +1,12 @@
 <?php
-// app/Models/People/Email.php
+// app/Models/Contact/Email.php
 
-namespace App\Models\People;
+namespace App\Models\Contact;
 
 use App\Models\Concerns\HasAuditUsers;
 use App\Models\Identity\User;
+use App\Models\People\Person;
+use App\Models\People\PersonEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;

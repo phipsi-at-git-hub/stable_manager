@@ -1,9 +1,11 @@
 <?php
-//app/Models/People/Address.php 
+//app/Models/Contact/Address.php 
 
-namespace App\Models\People;
+namespace App\Models\Contact;
 
 use App\Models\Concerns\HasAuditUsers;
+use App\Models\People\Person;
+use App\Models\People\PersonAddress;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;

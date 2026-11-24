@@ -4,11 +4,15 @@
 namespace App\Models\People;
 
 use App\Models\Concerns\HasAuditUsers;
+use App\Models\Contact\Address;
+use App\Models\Contact\Email;
+use App\Models\Contact\PhoneNumber;
+use App\Models\EntityStructures\PersonRole;
+use App\Models\EntityStructures\Role;
 use App\Models\Identity\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
@@ -56,7 +60,7 @@ class Person extends Model
      * 
      * Addresses associated with this person. 
      *
-     * @return HasMany
+     * @return BelongsToMany
      */
     public function addresses(): BelongsToMany
     {
@@ -80,7 +84,7 @@ class Person extends Model
      * 
      * Phone numbers associated with this person. 
      *
-     * @return HasMany
+     * @return BelongsToMany
      */
     public function phoneNumbers(): BelongsToMany
     {
@@ -119,6 +123,24 @@ class Person extends Model
                 'is_primary', 
                 'created_by', 
                 'updated_by'
+            ])
+            ->withTimestamps(); 
+    }
+
+    public function roles() : BelongsToMany {
+        return $this->belongsToMany(
+            Role::class, 
+            'person_roles', 
+            'person_id', 
+            'role_id'
+        )
+            ->using(PersonRole::class)
+            ->withPivot([
+                'id', 
+                'club_id', 
+                'stable_id', 
+                'created_by', 
+                'updated_by',
             ])
             ->withTimestamps(); 
     }

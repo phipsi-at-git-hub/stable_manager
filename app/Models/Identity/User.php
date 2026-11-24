@@ -5,7 +5,9 @@ namespace App\Models\Identity;
 
 use App\Enums\Identity\UserStatus;
 use App\Models\Concerns\HasAuditUsers;
-use App\Models\People\Email;
+use App\Models\Contact\Email;
+use App\Models\EntityStructures\Role;
+use App\Models\EntityStructures\UserRole;
 use App\Models\People\Person;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -95,7 +97,8 @@ class User extends Authenticatable
     /**
      * roles
      * 
-     * Roles assigned to the user. 
+     * Roles assigned directly to the user. 
+     * Assignments can be global or scoped to a club or stable. 
      *
      * @return BelongsToMany
      */
@@ -103,12 +106,15 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(
             Role::class,
-            'role_user',
+            'user_roles',
             'user_id',
             'role_id'
         )
             ->using(UserRole::class)
             ->withPivot([
+                'id', 
+                'club_id',
+                'stable_id',
                 'created_by',
                 'updated_by',
             ])
@@ -119,6 +125,7 @@ class User extends Authenticatable
      * hasRole
      * 
      * Check whether the user has a specific role. 
+     * Checks all assignments, regardless of scope. 
      *
      * @param string $role
      * @return bool

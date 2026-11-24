@@ -4,6 +4,7 @@
 namespace App\Models\People;
 
 use App\Models\Concerns\HasAuditUsers;
+use App\Models\Contact\Address;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 

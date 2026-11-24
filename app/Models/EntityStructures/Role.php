@@ -1,9 +1,10 @@
 <?php
-// app/Models/Identity/Role.php 
+// app/Models/EntityStructures/Role.php 
 
-namespace App\Models\Identity;
+namespace App\Models\EntityStructures;
 
 use App\Models\Concerns\HasAuditUsers;
+use App\Models\Identity\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
