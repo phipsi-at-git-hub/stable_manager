@@ -155,28 +155,69 @@ class User extends Authenticatable
     /**
      * isSuperAdmin
      * 
-     * Check whether the user is a super administrator. 
+     * Check whether the user has the global super administrator role.
      *
      * @return bool
      */
     public function isSuperAdmin(): bool
     {
-        return $this->hasRole(Role::SUPER_ADMIN);
+        return $this->roles()
+            ->where('name', Role::SUPER_ADMIN)
+            ->wherePivotNull('club_id')
+            ->wherePivotNull('stable_id')
+            ->exists();
     }
 
     /**
      * isAdmin
      * 
-     * Check whether the user is an administrator. 
+     * Check whether the user has the global administrator role. 
      *
      * @return bool
      */
     public function isAdmin(): bool
     {
-        return $this->hasAnyRole([
-            Role::SUPER_ADMIN,
-            Role::ADMIN,
-        ]);
+        return $this->roles()
+            ->where('name', Role::ADMIN)
+            ->wherePivotNull('club_id')
+            ->wherePivotNull('stable_id')
+            ->exists() || $this->isSuperAdmin();
+    }
+
+    /**
+     * isAdminForClub
+     * 
+     * Check whether the user is an administrator of a specific club.
+     *
+     * @param string $clubId
+     * @return bool
+     */
+    public function isAdminForClub(string $clubId): bool 
+    {
+        return $this->isSuperAdmin() 
+            || $this->roles()
+                ->where('name', Role::ADMIN)
+                ->wherePivot('club_id', $clubId)
+                ->wherePivotNull('stable_id,')
+                ->exists(); 
+    }
+
+    /**
+     * isAdminForStable
+     * 
+     * Check whether the user is an administrator of a specific stable.
+     *
+     * @param string $stableId
+     * @return bool
+     */
+    public function isAdminForStable(string $stableId): bool 
+    {
+        return $this->isSuperAdmin() 
+            || $this->roles()
+                ->where('name', Role::ADMIN)
+                ->wherePivot('stable_id', $stableId)
+                ->wherePivotNull('club_id,')
+                ->exists(); 
     }
 
     /**
