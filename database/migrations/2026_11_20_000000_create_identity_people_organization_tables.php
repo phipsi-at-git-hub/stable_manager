@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -423,6 +422,70 @@ return new class extends Migration
 
             $table->index('club_id');
         });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Club and Stable Contact Associations
+        |--------------------------------------------------------------------------
+        */
+
+        $organizationContactTables = [
+            'club_addresses' => ['club_id', 'addresses', 'address_id'],
+            'club_emails' => ['club_id', 'emails', 'email_id'],
+            'club_phone_numbers' => ['club_id', 'phone_numbers', 'phone_number_id'],
+            'stable_addresses' => ['stable_id', 'addresses', 'address_id'],
+            'stable_emails' => ['stable_id', 'emails', 'email_id'],
+            'stable_phone_numbers' => ['stable_id', 'phone_numbers', 'phone_number_id'],
+        ];
+
+        foreach ($organizationContactTables as $tableName => [$ownerColumn, $contactTable, $contactColumn]) {
+            Schema::create($tableName, function (Blueprint $table) use ($ownerColumn, $contactTable, $contactColumn) {
+                $ownerTable = $ownerColumn === 'club_id' ? 'clubs' : 'stables';
+
+                $table->foreignUuid($ownerColumn)
+                    ->constrained($ownerTable)
+                    ->cascadeOnDelete();
+
+                $table->foreignUuid($contactColumn)
+                    ->constrained($contactTable)
+                    ->restrictOnDelete();
+
+                $table->boolean('is_primary')->default(false);
+
+                $table->timestampTz('created_at')->useCurrent();
+                $table->uuid('created_by')->nullable();
+
+                $table->timestampTz('updated_at')->useCurrent();
+                $table->uuid('updated_by')->nullable();
+
+                $table->primary([$ownerColumn, $contactColumn]);
+                $table->index($contactColumn);
+            });
+
+            DB::statement("
+                CREATE UNIQUE INDEX {$tableName}_primary_unique
+                ON {$tableName} ({$ownerColumn})
+                WHERE is_primary = TRUE
+            ");
+
+            Schema::table($tableName, function (Blueprint $table) use ($tableName) {
+                $table->foreign(
+                    'created_by',
+                    "{$tableName}_created_by_foreign"
+                )
+                    ->references('id')
+                    ->on('users')
+                    ->nullOnDelete();
+
+                $table->foreign(
+                    'updated_by',
+                    "{$tableName}_updated_by_foreign"
+                )
+                    ->references('id')
+                    ->on('users')
+                    ->nullOnDelete();
+            });
+        }
 
         /*
         |--------------------------------------------------------------------------
@@ -882,6 +945,13 @@ return new class extends Migration
         | Remove Organization Tables
         |--------------------------------------------------------------------------
         */
+
+        Schema::dropIfExists('stable_phone_numbers');
+        Schema::dropIfExists('stable_emails');
+        Schema::dropIfExists('stable_addresses');
+        Schema::dropIfExists('club_phone_numbers');
+        Schema::dropIfExists('club_emails');
+        Schema::dropIfExists('club_addresses');
 
         Schema::dropIfExists('stables');
         Schema::dropIfExists('clubs');
