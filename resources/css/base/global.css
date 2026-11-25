@@ -6,6 +6,7 @@ body,
 
 body {
     background: var(--sm-theme-background);
+    color: var(--sm-theme-text);
 }
 
 #app {
@@ -13,11 +14,16 @@ body {
 }
 
 :focus-visible {
-    outline: 2px solid var(--sm-color-primary);
-    outline-offset: 2px;
+    outline: 2px solid var(--sm-theme-primary);
+    outline-offset: 3px;
 }
 
 ::selection {
-    color: var(--sm-color-on-primary);
-    background: var(--sm-color-primary);
+    color: #FFFFFF;
+    background: var(--sm-theme-primary);
+}
+
+.v-application {
+    background: var(--sm-theme-background) !important;
+    color: var(--sm-theme-text);
 }

@@ -1,52 +1,24 @@
+/*
+ * Shared design tokens. Theme-dependent colors live in themes.css.
+ */
 :root {
-    /*
-     * Stable Manager design tokens.
-     * These values are the initial baseline and can be refined centrally.
-     */
+    --sm-font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --sm-font-size-xs: 0.75rem;
+    --sm-font-size-sm: 0.875rem;
+    --sm-font-size-base: 1rem;
+    --sm-font-size-lg: 1.125rem;
+    --sm-font-size-xl: 1.25rem;
+    --sm-font-size-2xl: 1.5rem;
+    --sm-font-size-3xl: 1.875rem;
+    --sm-line-height-base: 1.5;
 
-    /* Brand palette */
-    --sm-color-primary: #356AE6;
-    --sm-color-secondary: #7856D9;
-    --sm-color-accent: #16B8A6;
-
-    /* Semantic colors */
-    --sm-color-success: #16A477;
-    --sm-color-warning: #F0A23B;
-    --sm-color-error: #E65365;
-    --sm-color-info: #3298D4;
-
-    /* Neutral colors */
-    --sm-color-background: #F5F7FB;
-    --sm-color-surface: #FFFFFF;
-    --sm-color-surface-variant: #EDF1F7;
-    --sm-color-border: #E2E7F0;
-
-    /* Text colors */
-    --sm-color-text: #202B3C;
-    --sm-color-text-muted: #68758A;
-    --sm-color-text-subtle: #8994A6;
-    --sm-color-on-primary: #FFFFFF;
-
-    /* RGB channels used by Vuetify's theme variables */
-    --sm-color-primary-rgb: 53, 106, 230;
-    --sm-color-secondary-rgb: 120, 86, 217;
-    --sm-color-accent-rgb: 22, 184, 166;
-    --sm-color-success-rgb: 22, 164, 119;
-    --sm-color-warning-rgb: 240, 162, 59;
-    --sm-color-error-rgb: 230, 83, 101;
-    --sm-color-info-rgb: 50, 152, 212;
-    --sm-color-background-rgb: 245, 247, 251;
-    --sm-color-surface-rgb: 255, 255, 255;
-
-    /* Border radii */
     --sm-radius-xs: 4px;
-    --sm-radius-small: 6px;
+    --sm-radius-small: 7px;
     --sm-radius-control: 10px;
-    --sm-radius-card: 14px;
+    --sm-radius-card: 16px;
     --sm-radius-dialog: 18px;
     --sm-radius-pill: 9999px;
 
-    /* Spacing scale */
     --sm-spacing-1: 4px;
     --sm-spacing-2: 8px;
     --sm-spacing-3: 12px;
@@ -57,29 +29,19 @@
     --sm-spacing-10: 40px;
     --sm-spacing-12: 48px;
 
-    /* Typography */
-    --sm-font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --sm-font-size-xs: 0.75rem;
-    --sm-font-size-sm: 0.875rem;
-    --sm-font-size-base: 1rem;
-    --sm-font-size-lg: 1.125rem;
-    --sm-font-size-xl: 1.25rem;
-    --sm-font-size-2xl: 1.5rem;
-    --sm-font-size-3xl: 1.875rem;
-    --sm-line-height-base: 1.5;
+    --sm-color-success: #16845F;
+    --sm-color-success-rgb: 22, 132, 95;
+    --sm-color-warning-rgb: 194, 123, 22;
+    --sm-color-error: #D8465C;
+    --sm-color-error-rgb: 216, 70, 92;
+    --sm-color-info: #168AC1;
+    --sm-color-info-rgb: 22, 138, 193;
 
-    /* Elevation */
-    --sm-shadow-card: 0 2px 8px rgba(32, 43, 60, 0.05);
-    --sm-shadow-floating: 0 8px 24px rgba(32, 43, 60, 0.10);
-    --sm-shadow-dialog: 0 16px 48px rgba(32, 43, 60, 0.16);
+    --sm-sidebar-width: 256px;
+    --sm-header-height: 68px;
+    --sm-content-max-width: 1600px;
 
-    /* Motion */
     --sm-transition-fast: 120ms ease;
     --sm-transition-normal: 200ms ease;
     --sm-transition-slow: 300ms ease;
-
-    /* Layout */
-    --sm-sidebar-width: 264px;
-    --sm-header-height: 64px;
-    --sm-content-max-width: 1600px;
 }

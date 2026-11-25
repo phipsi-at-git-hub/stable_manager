@@ -1,25 +1,108 @@
 /*
- * Theme-specific semantic values.
- * The light theme is the initial application theme.
- * Dark mode is intentionally only a structural starting point.
+ * Six concrete theme variants:
+ * Meadow (natural green), Pulse (bright white/blue), Vice (sunset neon).
+ * Vice uses a broad contemporary neon/coastal color mood, not GTA artwork,
+ * logos, characters, or other game assets.
  */
-
 :root,
-[data-sm-theme="light"] {
+[data-sm-theme="meadow-light"] {
     color-scheme: light;
-
-    --sm-theme-background: var(--sm-color-background);
-    --sm-theme-surface: var(--sm-color-surface);
-    --sm-theme-surface-variant: var(--sm-color-surface-variant);
-    --sm-theme-text: var(--sm-color-text);
-    --sm-theme-text-muted: var(--sm-color-text-muted);
-    --sm-theme-border: var(--sm-color-border);
+    --sm-theme-background: #F4F6F1;
+    --sm-theme-surface: #FFFFFF;
+    --sm-theme-surface-raised: #FFFFFF;
+    --sm-theme-surface-soft: #E9EEE7;
+    --sm-theme-text: #26352A;
+    --sm-theme-text-muted: #69776C;
+    --sm-theme-border: #DFE6DD;
+    --sm-theme-primary: #496B50;
+    --sm-theme-primary-rgb: 73, 107, 80;
+    --sm-theme-secondary: #A18A68;
+    --sm-theme-accent: #78947B;
+    --sm-theme-shadow: 0 8px 24px rgba(39, 58, 43, 0.07);
+    --sm-theme-shadow-hover: 0 14px 34px rgba(39, 58, 43, 0.15);
 }
 
-/*
- * Reserved for a future dark theme.
- * Add and validate the dark palette before enabling this selector.
- */
-[data-sm-theme="dark"] {
+[data-sm-theme="meadow-dark"] {
     color-scheme: dark;
+    --sm-theme-background: #171E19;
+    --sm-theme-surface: #202A23;
+    --sm-theme-surface-raised: #263229;
+    --sm-theme-surface-soft: #2A382E;
+    --sm-theme-text: #EDF3ED;
+    --sm-theme-text-muted: #A7B5A9;
+    --sm-theme-border: #39483D;
+    --sm-theme-primary: #9DBCA0;
+    --sm-theme-primary-rgb: 157, 188, 160;
+    --sm-theme-secondary: #C4AE8D;
+    --sm-theme-accent: #83A88A;
+    --sm-theme-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    --sm-theme-shadow-hover: 0 14px 34px rgba(0, 0, 0, 0.34);
+}
+
+[data-sm-theme="pulse-light"] {
+    color-scheme: light;
+    --sm-theme-background: #F5F7FC;
+    --sm-theme-surface: #FFFFFF;
+    --sm-theme-surface-raised: #FFFFFF;
+    --sm-theme-surface-soft: #EDF1FA;
+    --sm-theme-text: #202B43;
+    --sm-theme-text-muted: #68758D;
+    --sm-theme-border: #E0E6F1;
+    --sm-theme-primary: #315BEA;
+    --sm-theme-primary-rgb: 49, 91, 234;
+    --sm-theme-secondary: #7A43D6;
+    --sm-theme-accent: #00AFA5;
+    --sm-theme-shadow: 0 8px 24px rgba(34, 55, 110, 0.07);
+    --sm-theme-shadow-hover: 0 14px 34px rgba(34, 55, 110, 0.16);
+}
+
+[data-sm-theme="pulse-dark"] {
+    color-scheme: dark;
+    --sm-theme-background: #151927;
+    --sm-theme-surface: #20263A;
+    --sm-theme-surface-raised: #252D44;
+    --sm-theme-surface-soft: #2B3450;
+    --sm-theme-text: #F1F3FC;
+    --sm-theme-text-muted: #AAB4CE;
+    --sm-theme-border: #3A4562;
+    --sm-theme-primary: #91A9FF;
+    --sm-theme-primary-rgb: 145, 169, 255;
+    --sm-theme-secondary: #C3A0FF;
+    --sm-theme-accent: #62D8D0;
+    --sm-theme-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    --sm-theme-shadow-hover: 0 14px 34px rgba(0, 0, 0, 0.38);
+}
+
+[data-sm-theme="vice-light"] {
+    color-scheme: light;
+    --sm-theme-background: #FFF9F7;
+    --sm-theme-surface: #FFFFFF;
+    --sm-theme-surface-raised: #FFFFFF;
+    --sm-theme-surface-soft: #FCEAF1;
+    --sm-theme-text: #342338;
+    --sm-theme-text-muted: #806D83;
+    --sm-theme-border: #F0DCE8;
+    --sm-theme-primary: #E64F91;
+    --sm-theme-primary-rgb: 230, 79, 145;
+    --sm-theme-secondary: #12AEBB;
+    --sm-theme-accent: #F2A34A;
+    --sm-theme-shadow: 0 8px 24px rgba(137, 63, 112, 0.08);
+    --sm-theme-shadow-hover: 0 14px 34px rgba(137, 63, 112, 0.18);
+}
+
+[data-sm-theme="vice-dark"] {
+    color-scheme: dark;
+    --sm-theme-background: #1D1724;
+    --sm-theme-surface: #2A2032;
+    --sm-theme-surface-raised: #33263D;
+    --sm-theme-surface-soft: #3A2A43;
+    --sm-theme-text: #FFF0F7;
+    --sm-theme-text-muted: #D0B8CA;
+    --sm-theme-border: #57405C;
+    --sm-theme-primary: #FF80B5;
+    --sm-theme-primary-rgb: 255, 128, 181;
+    --sm-theme-secondary: #62DCE4;
+    --sm-theme-accent: #FFC078;
+    --sm-theme-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+    --sm-theme-shadow-hover: 0 14px 34px rgba(0, 0, 0, 0.4);
 }

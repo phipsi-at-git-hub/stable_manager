@@ -1,0 +1,57 @@
+.sm-login {
+    width: 100%;
+}
+
+.sm-login h2 {
+    color: var(--sm-theme-text);
+    font-size: clamp(30px, 3vw, 38px);
+    font-weight: 730;
+    letter-spacing: -1.25px;
+}
+
+.sm-login__description {
+    margin-top: 12px;
+    margin-bottom: 34px;
+    color: var(--sm-theme-text-muted);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.sm-login__form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.sm-login__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sm-login__field label {
+    color: var(--sm-theme-text);
+    font-size: 13px;
+    font-weight: 620;
+}
+
+.sm-login__submit {
+    min-height: 52px;
+    margin-top: 2px;
+    font-weight: 650;
+}
+
+.sm-login__security {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    margin-top: 32px;
+    color: var(--sm-theme-text-muted);
+    font-size: 12px;
+    text-align: center;
+}
+
+.sm-login__security .v-icon {
+    color: var(--sm-theme-primary);
+}

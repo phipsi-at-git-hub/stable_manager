@@ -1,15 +1,7 @@
 /*
- * Stable Manager – global stylesheet entry point
- *
- * Keep imports in dependency order:
- * 1. Design tokens and themes
- * 2. Browser/application foundations
- * 3. Application layout
- * 4. Vuetify adaptations
- * 5. Stable Manager-specific components
- * 6. Utilities
+ * Global stylesheet entry point.
+ * Theme tokens -> browser foundations -> shell -> component styles -> Vuetify.
  */
-
 @import './abstracts/variables.css';
 @import './abstracts/themes.css';
 
@@ -22,14 +14,17 @@
 @import './layout/sidebar.css';
 @import './layout/content.css';
 
+@import './components/auth.css';
+@import './components/login.css';
+@import './components/navigation-card.css';
+@import './components/status.css';
+
 @import './vuetify/overrides.css';
 @import './vuetify/buttons.css';
 @import './vuetify/forms.css';
 @import './vuetify/cards.css';
 @import './vuetify/navigation.css';
 @import './vuetify/tables.css';
-
-@import './components/status.css';
 
 @import './utilities/spacing.css';
 @import './utilities/helpers.css';
