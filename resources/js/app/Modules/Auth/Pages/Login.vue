@@ -38,7 +38,6 @@ function submit() {
                         placeholder="Deine Zugangsdaten"
                         prepend-inner-icon="mdi-account-outline"
                         autocomplete="username"
-                        color="primary"
                         :error-messages="form.errors.login"
                         :disabled="form.processing"
                         hide-details="auto"
@@ -55,7 +54,6 @@ function submit() {
                         :append-inner-icon="passwordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
                         :type="passwordVisible ? 'text' : 'password'"
                         autocomplete="current-password"
-                        color="primary"
                         :error-messages="form.errors.password"
                         :disabled="form.processing"
                         hide-details="auto"
@@ -66,7 +64,6 @@ function submit() {
                 <v-checkbox
                     v-model="form.remember"
                     label="Angemeldet bleiben"
-                    color="primary"
                     density="compact"
                     hide-details
                     :disabled="form.processing"
@@ -74,7 +71,6 @@ function submit() {
 
                 <v-btn
                     type="submit"
-                    color="primary"
                     size="x-large"
                     block
                     rounded="lg"
