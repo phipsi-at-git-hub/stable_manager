@@ -38,7 +38,7 @@
         display: block;
     }
 
-    .sm-shell__sidebar {
+    .sm-sidebar.sm-shell__sidebar {
         display: none;
     }
 
