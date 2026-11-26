@@ -1,11 +1,17 @@
+
 <script setup lang="ts">
 import { computed } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 
 type ContextType = 'personal' | 'club' | 'stable';
 
 const props = defineProps<{
     context: ContextType;
 }>();
+
+const page = usePage();
+
+const currentPath = computed(() => page.url.split('?')[0]);
 
 const personalItems = [
     { title: 'Übersicht', icon: 'mdi-view-dashboard-outline', href: '/dashboard' },
@@ -33,6 +39,7 @@ const stableItems = [
 const items = computed(() => {
     if (props.context === 'club') return clubItems;
     if (props.context === 'stable') return stableItems;
+
     return personalItems;
 });
 
@@ -41,35 +48,48 @@ const sectionTitle = computed(() => ({
     club: 'VEREIN',
     stable: 'STALL',
 }[props.context]));
+
+function isActive(path: string): boolean {
+    return currentPath.value === path;
+}
 </script>
 
 <template>
     <aside class="sm-sidebar">
-        <div class="sm-sidebar__section-label">{{ sectionTitle }}</div>
+        <div class="sm-sidebar__section-label">
+            {{ sectionTitle }}
+        </div>
 
         <v-list nav density="comfortable" class="sm-sidebar__list">
             <v-list-item
                 v-for="item in items"
                 :key="item.href"
+                class="navigation-item navigation-item--full-width"
+                :class="{ 'navigation-item--active': isActive(item.href) }"
                 :title="item.title"
                 :prepend-icon="item.icon"
                 :href="item.href"
                 rounded="lg"
-                color="primary"
             />
         </v-list>
 
         <div class="sm-sidebar__bottom">
             <v-divider class="mb-3" />
+
             <v-list nav density="compact">
                 <v-list-item
+                    class="navigation-item navigation-item--full-width"
+                    :class="{ 'navigation-item--active': isActive('/settings') }"
                     title="Einstellungen"
                     prepend-icon="mdi-cog-outline"
                     href="/settings"
                     rounded="lg"
                 />
             </v-list>
-            <div class="sm-sidebar__version">Development Environment</div>
+
+            <div class="sm-sidebar__version">
+                Development Environment
+            </div>
         </div>
     </aside>
 </template>

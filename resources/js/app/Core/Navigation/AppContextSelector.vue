@@ -17,9 +17,24 @@ const contexts: Array<{
     subtitle: string;
     icon: string;
 }> = [
-    { value: 'personal', title: 'Persönlicher Bereich', subtitle: 'Dein Bereich', icon: 'mdi-account-outline' },
-    { value: 'club', title: 'Reitverein Sonnental', subtitle: 'Verein', icon: 'mdi-account-group-outline' },
-    { value: 'stable', title: 'Stall Sonnental', subtitle: 'Stall', icon: 'mdi-horse-variant' },
+    {
+        value: 'personal',
+        title: 'Persönlicher Bereich',
+        subtitle: 'Dein Bereich',
+        icon: 'mdi-account-outline',
+    },
+    {
+        value: 'club',
+        title: 'Reitverein Sonnental',
+        subtitle: 'Verein',
+        icon: 'mdi-account-group-outline',
+    },
+    {
+        value: 'stable',
+        title: 'Stall Sonnental',
+        subtitle: 'Stall',
+        icon: 'mdi-horse-variant',
+    },
 ];
 
 const selected = computed(
@@ -32,19 +47,21 @@ const selected = computed(
         <template #activator="{ props: menuProps }">
             <v-btn
                 v-bind="menuProps"
-                class="sm-context-trigger"
-                variant="tonal"
-                color="primary"
+                class="width-limited"
+                variant="text"
                 prepend-icon="mdi-domain"
                 append-icon="mdi-chevron-down"
                 rounded="lg"
             >
-                <span class="sm-context-trigger__label">{{ selected.title }}</span>
+                <span class="text-truncate">
+                    {{ selected.title }}
+                </span>
             </v-btn>
         </template>
 
         <v-list min-width="280" density="comfortable">
             <v-list-subheader>Arbeitskontext</v-list-subheader>
+
             <v-list-item
                 v-for="context in contexts"
                 :key="context.value"

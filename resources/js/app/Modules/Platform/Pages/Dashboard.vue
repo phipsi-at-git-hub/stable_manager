@@ -80,7 +80,7 @@ const greeting = computed(() => {
                             <h2>Demnächst</h2>
                             <p>Hier erscheinen deine nächsten Termine.</p>
                         </div>
-                        <v-icon icon="mdi-calendar-clock-outline" color="primary" size="24" />
+                        <v-icon icon="mdi-calendar-clock-outline" size="24" />
                     </div>
                     <div class="sm-empty-state">
                         <v-icon icon="mdi-calendar-blank-outline" size="30" />
@@ -94,7 +94,7 @@ const greeting = computed(() => {
                             <h2>Aktuelles</h2>
                             <p>Neuigkeiten aus deinen Bereichen.</p>
                         </div>
-                        <v-icon icon="mdi-bell-outline" color="primary" size="24" />
+                        <v-icon icon="mdi-bell-outline" size="24" />
                     </div>
                     <div class="sm-empty-state">
                         <v-icon icon="mdi-message-text-outline" size="30" />

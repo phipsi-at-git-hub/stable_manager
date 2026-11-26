@@ -1,12 +1,62 @@
-.v-list-item {
+
+.navigation-item {
+    display: inline-flex;
+    align-items: center;
+
+    border-radius: var(--sm-radius-control);
+    background: transparent;
+    color: var(--sm-theme-text-muted);
+    text-decoration: none;
+
+    transition:
+        background-color var(--sm-transition-fast),
+        color var(--sm-transition-fast),
+        transform var(--sm-transition-fast);
+}
+
+.navigation-item:hover {
+    background-color: var(--sm-theme-surface-soft);
+    color: var(--sm-theme-text);
+}
+
+.navigation-item:active {
+    background-color: var(--sm-theme-surface-soft);
+    color: var(--sm-theme-text);
+    transform: scale(0.97);
+}
+
+.navigation-item--active,
+.navigation-item--active:hover,
+.navigation-item--active:active {
+    background-color: var(--sm-theme-surface-soft);
+    color: var(--sm-theme-primary);
+}
+
+.navigation-item:focus-visible {
+    outline: 2px solid var(--sm-theme-primary);
+    outline-offset: 2px;
+}
+
+/* Vuetify list integration */
+.v-list-item.navigation-item {
     border-radius: var(--sm-radius-control);
 }
 
+.v-list-item.navigation-item .v-list-item__overlay {
+    opacity: 0 !important;
+}
+
+/* Use the available width instead of the content width. */
+.navigation-item--full-width {
+    display: flex;
+    width: 100%;
+}
+
+/* Navigation drawer */
 .v-navigation-drawer {
     border-color: var(--sm-theme-border);
 }
 
-/* Scrollbars only consume space when the content actually overflows. */
 .v-navigation-drawer__content,
 .sm-sidebar {
     overflow-y: auto;

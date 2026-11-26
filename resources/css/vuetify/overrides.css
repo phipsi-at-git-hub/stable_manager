@@ -1,6 +1,9 @@
 /*
- * Keep Vuetify surfaces synchronized with the active CSS theme family.
- */
+|--------------------------------------------------------------------------
+| Vuetify application overrides
+|--------------------------------------------------------------------------
+*/
+
 .v-application {
     font-family: var(--sm-font-family);
     background: var(--sm-theme-background);
@@ -18,6 +21,11 @@
     background: var(--sm-theme-surface);
 }
 
+.v-list {
+    background: transparent;
+    color: var(--sm-theme-text);
+}
+
 .v-field {
     border-radius: var(--sm-radius-control);
 }
@@ -26,12 +34,12 @@
     font-weight: 500;
 }
 
-.v-btn {
-    letter-spacing: normal;
-    text-transform: none;
-}
-
 .v-data-table {
     border-radius: var(--sm-radius-card);
     overflow: hidden;
+}
+
+.v-divider {
+    border-color: var(--sm-theme-border);
+    opacity: 1;
 }

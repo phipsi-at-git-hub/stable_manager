@@ -1,8 +1,67 @@
+
 .v-btn {
     letter-spacing: normal;
     text-transform: none;
+
+    transition:
+        background-color var(--sm-transition-fast),
+        color var(--sm-transition-fast),
+        border-color var(--sm-transition-fast);
 }
 
 .v-btn--rounded {
     border-radius: var(--sm-radius-control);
+}
+
+/* Shared interaction appearance */
+.v-btn .v-btn__overlay,
+.v-btn .v-btn__underlay,
+.v-list-item .v-list-item__overlay {
+    opacity: 0 !important;
+}
+
+.v-btn--variant-text:hover,
+.v-btn--variant-text:active,
+.v-btn--variant-outlined:hover,
+.v-btn--variant-outlined:active,
+.v-list-item:hover,
+.v-list-item:active {
+    background-color: var(--sm-theme-surface-soft);
+    color: var(--sm-theme-text);
+}
+
+/* Selected navigation items */
+.v-list-item--active,
+.v-list-item--active:hover,
+.v-list-item--active:active {
+    background-color: var(--sm-theme-surface-soft);
+    color: var(--sm-theme-primary);
+}
+
+/* Keyboard focus */
+.v-btn:focus-visible,
+.v-list-item:focus-visible {
+    outline: 2px solid var(--sm-theme-primary);
+    outline-offset: 2px;
+}
+
+/* Reusable icon button shape */
+.icon-button {
+    border-radius: 50%;
+}
+
+/* Avatar appearance */
+.icon-button .v-avatar {
+    background-color: var(--sm-theme-primary);
+    color: rgb(var(--sm-theme-on-primary-rgb));
+}
+
+/* Width-limited controls */
+.width-limited {
+    max-width: 260px;
+}
+
+.width-limited .v-btn__content {
+    min-width: 0;
+    overflow: hidden;
 }

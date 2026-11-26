@@ -9,6 +9,7 @@ const { currentTheme, themes, applyTheme } = useAppTheme();
         <template #activator="{ props }">
             <v-btn
                 v-bind="props"
+                class="icon-button"
                 icon="mdi-palette-outline"
                 variant="text"
                 aria-label="Theme auswählen"
@@ -18,6 +19,7 @@ const { currentTheme, themes, applyTheme } = useAppTheme();
 
         <v-list density="compact" min-width="220">
             <v-list-subheader>Design auswählen</v-list-subheader>
+
             <v-list-item
                 v-for="(details, name) in themes"
                 :key="name"
