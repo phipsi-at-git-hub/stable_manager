@@ -1,10 +1,10 @@
-
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, mergeProps } from 'vue';
 import { router, usePage } from '@inertiajs/vue3';
 
 import AppContextSelector from './AppContextSelector.vue';
 import AppThemeSelector from '@Core/Components/AppThemeSelector.vue';
+import AppLocaleSelector from '@Core/Components/AppLocaleSelector.vue';
 
 type ContextType = 'personal' | 'club' | 'stable';
 
@@ -25,7 +25,7 @@ function isActive(path: string): boolean {
     return currentPath.value === path;
 }
 
-function logout() {
+function logout(): void {
     router.post('/logout');
 }
 </script>
@@ -33,13 +33,18 @@ function logout() {
 <template>
     <header class="app-header">
         <div class="app-header__left">
-            <v-btn
-                class="app-header__mobile-menu"
-                icon="mdi-menu"
-                variant="text"
-                aria-label="Navigation öffnen"
-                @click="emit('toggle-navigation')"
-            />
+            <v-tooltip text="Navigation öffnen" location="bottom">
+                <template #activator="{ props }">
+                    <v-btn
+                        v-bind="props"
+                        class="app-header__mobile-menu"
+                        icon="mdi-menu"
+                        variant="text"
+                        aria-label="Navigation öffnen"
+                        @click="emit('toggle-navigation')"
+                    />
+                </template>
+            </v-tooltip>
 
             <a href="/dashboard" class="app-brand" aria-label="Zur Übersicht">
                 <span class="app-brand__mark">
@@ -88,19 +93,25 @@ function logout() {
 
             <AppThemeSelector />
 
+            <AppLocaleSelector />
+
             <v-menu location="bottom end">
-                <template #activator="{ props }">
-                    <v-btn
-                        v-bind="props"
-                        class="icon-button"
-                        variant="text"
-                        icon
-                        aria-label="Benutzermenü öffnen"
-                    >
-                        <v-avatar size="34">
-                            <v-icon icon="mdi-account" />
-                        </v-avatar>
-                    </v-btn>
+                <template #activator="{ props: menuProps }">
+                    <v-tooltip text="Benutzermenü öffnen" location="bottom">
+                        <template #activator="{ props: tooltipProps }">
+                            <v-btn
+                                v-bind="mergeProps(menuProps, tooltipProps)"
+                                class="icon-button"
+                                variant="text"
+                                icon
+                                aria-label="Benutzermenü öffnen"
+                            >
+                                <v-avatar size="34">
+                                    <v-icon icon="mdi-account" />
+                                </v-avatar>
+                            </v-btn>
+                        </template>
+                    </v-tooltip>
                 </template>
 
                 <v-list density="compact" min-width="190">

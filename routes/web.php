@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController; 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Localization\LocaleController;
 use Illuminate\Support\Facades\Route; 
 use Inertia\Inertia; 
 
@@ -32,6 +33,14 @@ Route::middleware('auth')->group(function () {
         'destroy', 
     ])->name('logout'); 
 }); 
+
+/**
+ * Routes outside middleware 
+ */
+Route::post('/locale', [
+    LocaleController::class, 
+    'update', 
+])->name('locale.update'); 
 
 /**
  * Routes for development

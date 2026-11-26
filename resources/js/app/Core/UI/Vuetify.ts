@@ -1,5 +1,8 @@
 import { createVuetify } from 'vuetify';
 
+import { getVuetifyLocale } from '@Core/Localization';
+import type { AppLocale } from '@Core/Localization';
+
 export type AppThemeName =
     | 'meadow-light'
     | 'meadow-dark'
@@ -33,7 +36,7 @@ function getInitialTheme(): AppThemeName {
         : 'meadow-light';
 }
 
-export function createStableManagerVuetify() {
+export function createStableManagerVuetify(locale: AppLocale) {
     const defaultTheme = getInitialTheme();
 
     return createVuetify({
@@ -46,6 +49,8 @@ export function createStableManagerVuetify() {
                 ]),
             ),
         },
+
+        locale: getVuetifyLocale(locale),
 
         defaults: {
             VCard: {

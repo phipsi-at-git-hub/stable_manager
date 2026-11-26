@@ -9,19 +9,32 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * SetLocale
+ */
 final class SetLocale
 {
+    /**
+     * handle
+     *
+     * @param Request $request
+     * @param Closure $next
+     * @return Response
+     */
     public function handle(Request $request, Closure $next): Response
     {
         /*
          * User-specific locale selection can be added here later.
          * Until then, the configured application default is authoritative.
          */
-        $locale = (string) config('localization.default_locale', 'en-US');
-        $availableLocales = (array) config('localization.available_locales', ['en-US']);
+        //$locale = (string) config('localization.default_locale', 'en-US');
+        $availableLocales = (array) config('localization.available_locales', ['en-US'],);
+        $fallbackLocale = (array) config('localization.default_locale', 'en-US',);
+        $locale = (string) $request->session()->get('locale', config('localization.default_locale', $fallbackLocale)); 
 
         if (! in_array($locale, $availableLocales, true)) {
-            $locale = (string) config('localization.fallback_locale', 'en-US');
+            //$locale = (string) config('localization.fallback_locale', 'en-US');
+            $locale = $fallbackLocale; 
         }
 
         app()->setLocale($locale);

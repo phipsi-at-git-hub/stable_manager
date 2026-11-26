@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AppThemeSelector from '@Core/Components/AppThemeSelector.vue';
+import AppLocaleSelector from '@Core/Components/AppLocaleSelector.vue';
 </script>
 
 <template>
@@ -49,6 +50,8 @@ import AppThemeSelector from '@Core/Components/AppThemeSelector.vue';
             <main class="sm-auth-content">
                 <div class="sm-auth-content__toolbar">
                     <AppThemeSelector />
+
+                    <AppLocaleSelector />
                 </div>
 
                 <div class="sm-auth-content__inner">

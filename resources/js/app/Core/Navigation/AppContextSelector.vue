@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, mergeProps } from 'vue';
 
 type ContextType = 'personal' | 'club' | 'stable';
 
@@ -45,18 +45,22 @@ const selected = computed(
 <template>
     <v-menu location="bottom start" :close-on-content-click="true">
         <template #activator="{ props: menuProps }">
-            <v-btn
-                v-bind="menuProps"
-                class="width-limited"
-                variant="text"
-                prepend-icon="mdi-domain"
-                append-icon="mdi-chevron-down"
-                rounded="lg"
-            >
-                <span class="text-truncate">
-                    {{ selected.title }}
-                </span>
-            </v-btn>
+            <v-tooltip text="Arbeitskontext wechseln" location="bottom">
+                <template #activator="{ props: tooltipProps }">
+                    <v-btn
+                        v-bind="mergeProps(menuProps, tooltipProps)"
+                        class="width-limited"
+                        variant="text"
+                        prepend-icon="mdi-domain"
+                        append-icon="mdi-chevron-down"
+                        rounded="lg"
+                    >
+                        <span class="text-truncate">
+                            {{ selected.title }}
+                        </span>
+                    </v-btn>
+                </template>
+            </v-tooltip>
         </template>
 
         <v-list min-width="280" density="comfortable">

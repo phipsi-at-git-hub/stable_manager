@@ -4,15 +4,13 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { createStableManagerVuetify } from './Core/UI/Vuetify';
 
 import {
-    createAppI18n, 
-    type LocalizationPayload, 
+    createAppI18n,
+    type LocalizationPayload,
 } from './Core/Localization';
 
 import 'vuetify/styles';
 import '@mdi/font/css/materialdesignicons.css';
 import '../../css/app.css';
-
-const vuetify = createStableManagerVuetify();
 
 const pages = import.meta.glob<{ default: DefineComponent }>(
     './Modules/**/*.vue',
@@ -34,8 +32,10 @@ createInertiaApp({
     },
 
     setup({ el, App, props, plugin }) {
-        const localization = props.initialPage.props.localization as LocalizationPayload; 
-        const i18n = createAppI18n(localization); 
+        const localization = props.initialPage.props.localization as LocalizationPayload;
+
+        const i18n = createAppI18n(localization);
+        const vuetify = createStableManagerVuetify(localization.locale);
 
         createApp({
             render: () => h(App, props),
