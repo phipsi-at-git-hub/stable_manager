@@ -9,8 +9,26 @@
             },
             "label": {
                 "loading": "Wird geladen...", 
+                "goodMorning": "Guten Morgen",
+                "goodAfternoon": "Guten Tag",
+                "goodEvening": "Guten Abend",
+                "goodNight": "Gute Nacht",
                 "welcome": "Willkommen beim Stable Manager", 
-                "description": "Deine zentrale Plattform für die Pferdeverwaltung."
+                "description": "Deine zentrale Plattform für das Miteinander rund um Pferde.",
+                "dev": "Entwicklungsumgebung",
+                "your_overview": "Dein Überblick", 
+                "your_sections": "Deine Bereiche", 
+                "directly_to_sections": "Direkteinstieg zu den wichtigsen Bereichen.", 
+                "overview": "Übersicht", 
+                "in_sight": "Alles im Blick"
+            },
+            "settings": {
+                "choose_theme": "Theme auswählen",
+                "choose_locale": "Sprache auswählen"
+            },
+            "tooltip": {
+                "choose_theme": "Theme auswählen",
+                "choose_locale": "Sprache auswählen"
             },
             "message": {
                 "confirm_delete": "Möchtest du diesen Eintrag wirklich löschen?"

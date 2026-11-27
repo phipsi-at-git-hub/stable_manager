@@ -24,14 +24,29 @@ Route::middleware('guest')->group(function () {
  * Routes for logged in users
  */
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Platform/Pages/Dashboard'); 
-    })->name('platform.dashboard'); 
-
+    /**
+     * Auth
+     */
     Route::post('/logout', [
         AuthenticatedSessionController::class, 
         'destroy', 
     ])->name('logout'); 
+
+    /**
+     * Dashboard
+     */
+    Route::prefix('dashboard')
+        ->name('dashboard')
+        ->group(function () {
+            Route::get('/', function () {
+                return Inertia::render('Dashboard/Pages/DashboardIndex');
+            })->name('');
+        }); 
+    /*
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard/Pages/DashboardIndex'); 
+    })->name('dashboard'); 
+    */
 }); 
 
 /**
@@ -46,6 +61,15 @@ Route::post('/locale', [
  * Routes for development
  */
 Route::get('/test', function () { return Inertia::render('Dev/Pages/Test'); })->name('test'); 
+
+/**
+ * Fallback route
+ */
+/*
+Route::fallback(function () {
+    return redirect()->route('dashboard');
+})->middleware('auth'); 
+*/
 
 /*
 Route::get('/', function () { return Inertia::render('Platform/Pages/Dashboard'); })->name('platform.dashboard');

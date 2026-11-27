@@ -1,0 +1,38 @@
+{
+    "navigation": {
+        "general": {
+            "label": {
+                "start": "Start", 
+                "community": "Community", 
+                "work_context": "Workings context", 
+                "profile": "Profile",
+                "my_profile": "My Profile",
+                "settings": "Settings",
+                "logout": "Logout",
+
+                "stable": "Stable",
+                "stables": "Stables", 
+                "stable_overview": "Stable overview", 
+                "people": "People", 
+                "horses": "Horses", 
+                "riding_operation": "Riding operations", 
+                "operations": "Operations", 
+                "facilities": "Facilities", 
+                "tasks": "Tasks", 
+                "appointments": "Appointments"
+            }, 
+            "tooltip": {
+                "home": "Back to home",
+                "start": "To dashboard", 
+                "community": "To my Community",
+                "context_switch": "Switch working context",
+                "notifications": "Notifications", 
+                "theme_switch": "Choose theme",
+                "locale_switch": "Choose language",
+                "open_user_menu": "Open user menu", 
+                "open_navigation_menu": "Open navigation menu", 
+                "choose_work_context": "Choose working context"
+            }
+        }
+    }
+}

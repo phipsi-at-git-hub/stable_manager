@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed, mergeProps } from 'vue';
 import { router, usePage } from '@inertiajs/vue3';
+import { useI18n } from 'vue-i18n';
 
 import AppContextSelector from './AppContextSelector.vue';
 import AppThemeSelector from '@Core/Components/AppThemeSelector.vue';
 import AppLocaleSelector from '@Core/Components/AppLocaleSelector.vue';
+
+const { t } = useI18n();
 
 type ContextType = 'personal' | 'club' | 'stable';
 
@@ -33,14 +36,14 @@ function logout(): void {
 <template>
     <header class="app-header">
         <div class="app-header__left">
-            <v-tooltip text="Navigation öffnen" location="bottom">
+            <v-tooltip :text="t('navigation.general.tooltip.open_navigation_menu')" location="bottom">
                 <template #activator="{ props }">
                     <v-btn
                         v-bind="props"
                         class="app-header__mobile-menu"
                         icon="mdi-menu"
                         variant="text"
-                        aria-label="Navigation öffnen"
+                        :aria-label="t('navigation.general.tooltip.open_navigation_menu')"
                         @click="emit('toggle-navigation')"
                     />
                 </template>
@@ -51,25 +54,35 @@ function logout(): void {
                     <v-icon icon="mdi-horse-variant" />
                 </span>
 
-                <span class="app-brand__name">StableManager</span>
+                <span class="app-brand__name">{{ t('application.name') }}</span>
             </a>
 
             <nav class="app-header__global-nav" aria-label="Globale Navigation">
-                <a
-                    href="/dashboard"
-                    class="navigation-item app-header__link"
-                    :class="{ 'navigation-item--active': isActive('/dashboard') }"
-                >
-                    Start
-                </a>
+                <v-tooltip :text="t('navigation.general.tooltip.start')" location="bottom">
+                    <template #activator="{ props }">
+                        <a
+                            v-bind="props"
+                            href="/dashboard"
+                            class="navigation-item app-header__link"
+                            :class="{ 'navigation-item--active': isActive('/dashboard') }"
+                        >
+                            {{ t('navigation.general.label.start') }}
+                        </a>
+                    </template>
+                </v-tooltip>
 
-                <a
-                    href="/community"
-                    class="navigation-item app-header__link"
-                    :class="{ 'navigation-item--active': isActive('/community') }"
-                >
-                    Community
-                </a>
+                <v-tooltip :text="t('navigation.general.tooltip.community')" location="bottom">
+                    <template #activator="{ props }">
+                        <a
+                            v-bind="props"
+                            href="/community"
+                            class="navigation-item app-header__link"
+                            :class="{ 'navigation-item--active': isActive('/community') }"
+                        >
+                            {{ t('navigation.general.label.community') }}
+                        </a>
+                    </template>
+                </v-tooltip>
             </nav>
         </div>
 
@@ -79,14 +92,14 @@ function logout(): void {
                 @update:model-value="emit('update:context', $event)"
             />
 
-            <v-tooltip text="Benachrichtigungen" location="bottom">
+            <v-tooltip :text="t('navigation.general.tooltip.notifications')" location="bottom">
                 <template #activator="{ props }">
                     <v-btn
                         v-bind="props"
                         class="icon-button"
                         icon="mdi-bell-outline"
                         variant="text"
-                        aria-label="Benachrichtigungen"
+                        :aria-label="t('navigation.general.tooltip.notifications')"
                     />
                 </template>
             </v-tooltip>
@@ -97,14 +110,14 @@ function logout(): void {
 
             <v-menu location="bottom end">
                 <template #activator="{ props: menuProps }">
-                    <v-tooltip text="Benutzermenü öffnen" location="bottom">
+                    <v-tooltip :text="t('navigation.general.tooltip.open_user_menu')" location="bottom">
                         <template #activator="{ props: tooltipProps }">
                             <v-btn
                                 v-bind="mergeProps(menuProps, tooltipProps)"
                                 class="icon-button"
                                 variant="text"
                                 icon
-                                aria-label="Benutzermenü öffnen"
+                                :aria-label="t('navigation.general.tooltip.open_user_menu')"
                             >
                                 <v-avatar size="34">
                                     <v-icon icon="mdi-account" />
@@ -116,13 +129,13 @@ function logout(): void {
 
                 <v-list density="compact" min-width="190">
                     <v-list-item
-                        title="Mein Profil"
+                        :title="t('navigation.general.label.my_profile')"
                         prepend-icon="mdi-account-outline"
                         href="/profile"
                     />
 
                     <v-list-item
-                        title="Einstellungen"
+                        :title="t('navigation.general.label.settings')"
                         prepend-icon="mdi-cog-outline"
                         href="/settings"
                     />
@@ -130,7 +143,7 @@ function logout(): void {
                     <v-divider class="my-1" />
 
                     <v-list-item
-                        title="Abmelden"
+                        :title="t('navigation.general.label.logout')"
                         prepend-icon="mdi-logout"
                         @click="logout"
                     />

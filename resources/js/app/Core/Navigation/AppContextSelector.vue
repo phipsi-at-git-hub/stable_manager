@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed, mergeProps } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 type ContextType = 'personal' | 'club' | 'stable';
 
+const { t } = useI18n();
 const props = defineProps<{
     modelValue: ContextType;
 }>();
@@ -45,7 +47,7 @@ const selected = computed(
 <template>
     <v-menu location="bottom start" :close-on-content-click="true">
         <template #activator="{ props: menuProps }">
-            <v-tooltip text="Arbeitskontext wechseln" location="bottom">
+            <v-tooltip :text="t('navigation.general.tooltip.choose_work_context')" location="bottom">
                 <template #activator="{ props: tooltipProps }">
                     <v-btn
                         v-bind="mergeProps(menuProps, tooltipProps)"
@@ -64,7 +66,7 @@ const selected = computed(
         </template>
 
         <v-list min-width="280" density="comfortable">
-            <v-list-subheader>Arbeitskontext</v-list-subheader>
+            <v-list-subheader>{{ t('navigation.general.label.work_context') }}</v-list-subheader>
 
             <v-list-item
                 v-for="context in contexts"

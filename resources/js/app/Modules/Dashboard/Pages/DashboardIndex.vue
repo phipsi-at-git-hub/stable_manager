@@ -9,19 +9,19 @@ const { t } = useI18n();
 const greeting = computed(() => {
     const hour = new Date().getHours();
 
-    if (hour < 6) return 'Gute Nacht';
-    if (hour < 11) return 'Guten Morgen';
-    if (hour < 18) return 'Guten Tag';
-    return 'Guten Abend';
+    if (hour < 6) return t('application.general.label.goodNight') //'Gute Nacht';
+    if (hour < 11) return t('application.general.label.goodMorning') //'Guten Morgen';
+    if (hour < 18) return t('application.general.label.goodAfternoon') //'Guten Tag';
+    return t('application.general.label.goodEvening') //'Guten Abend';
 });
 </script>
 
 <template>
-    <AppLayout title="Übersicht">
+    <AppLayout :title="t('application.general.label.overview')">
         <div class="sm-page">
             <header class="sm-page-heading">
                 <div>
-                    <div class="sm-page-heading__eyebrow">DEIN ÜBERBLICK</div>
+                    <div class="sm-page-heading__eyebrow">{{ t('application.general.label.your_overview').toUpperCase() }}</div>
                     <h1>{{ greeting }}!</h1>
                     <p>
                         {{ t('application.general.label.welcome') }}
@@ -29,15 +29,15 @@ const greeting = computed(() => {
                 </div>
 
                 <v-chip color="success" variant="tonal" prepend-icon="mdi-check-circle-outline">
-                    Alles im Blick
+                    {{ t('application.general.label.in_sight') }}
                 </v-chip>
             </header>
 
             <section class="sm-dashboard-section">
                 <div class="sm-section-heading">
                     <div>
-                        <h2>Deine Bereiche</h2>
-                        <p>Direkteinstiege zu den wichtigsten Bereichen.</p>
+                        <h2>{{ t('application.general.label.your_sections') }}</h2>
+                        <p>{{ t('application.general.label.directly_to_sections') }}</p>
                     </div>
                 </div>
 

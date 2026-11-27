@@ -10,6 +10,8 @@ const { locale: i18nLocale } = useI18n({
     useScope: 'global',
 });
 
+const { t } = useI18n();
+
 const { current: vuetifyLocale } = useLocale();
 
 const locales: Array<{
@@ -53,21 +55,21 @@ function applyLocale(locale: AppLocale): void {
 <template>
     <v-menu location="bottom end" :close-on-content-click="true">
         <template #activator="{ props: menuProps }">
-            <v-tooltip text="Sprache auswählen" location="bottom">
+            <v-tooltip :text="t('application.general.tooltip.choose_locale')" location="bottom">
                 <template #activator="{ props: tooltipProps }">
                     <v-btn
                         v-bind="mergeProps(menuProps, tooltipProps)"
                         class="icon-button"
                         icon="mdi-translate"
                         variant="text"
-                        aria-label="Sprache auswählen"
+                        :aria-label="t('application.general.tooltip.choose_locale')"
                     />
                 </template>
             </v-tooltip>
         </template>
 
         <v-list density="compact" min-width="180">
-            <v-list-subheader>Sprache auswählen</v-list-subheader>
+            <v-list-subheader>{{ t('application.general.settings.choose_locale') }}</v-list-subheader>
 
             <v-list-item
                 v-for="item in locales"

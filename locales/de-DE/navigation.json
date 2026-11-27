@@ -1,0 +1,38 @@
+{
+    "navigation": {
+        "general": {
+            "label": {
+                "start": "Start", 
+                "community": "Community", 
+                "work_context": "Arbeitskontext", 
+                "profile": "Profil",
+                "my_profile": "Mein Profil",
+                "settings": "Einstellungen",
+                "logout": "Abmelden",
+
+                "stable": "Stall",
+                "stables": "Ställe", 
+                "stable_overview": "Stallübersicht", 
+                "people": "Personen", 
+                "horses": "Pferde", 
+                "riding_operation": "Reitbetrieb", 
+                "operations": "Betrieb", 
+                "facilities": "Anlagen", 
+                "tasks": "Aufgaben", 
+                "appointments": "Termine"
+            }, 
+            "tooltip": {
+                "home": "Zurück zur Startseite",
+                "start": "Zum Dashboard", 
+                "community": "Zu meiner Community",
+                "context_switch": "Arbeitskontext wechseln",
+                "notifications": "Benachrichtigungen", 
+                "theme_switch": "Theme auswählen",
+                "locale_switch": "Sprache auswählen",
+                "open_user_menu": "Benutzermenü öffnen", 
+                "open_navigation_menu": "Navigation öffnen", 
+                "choose_work_context": "Arbeitskontext wechseln"
+            }
+        }
+    }
+}

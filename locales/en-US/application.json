@@ -1,6 +1,6 @@
 {
     "application": {
-        "name": "Stable Manaer", 
+        "name": "Stable Manager", 
         "general": {
             "btn": {
                 "save": "Save",
@@ -14,8 +14,21 @@
                 "goodEvening": "Good Evening",
                 "goodNight": "Good Night",
                 "welcome": "Welcome to Stable Manager", 
-                "description": "Your central platfrom for horse management", 
-                "fallbackTest": "This text comes from the English fallback locale."
+                "description": "Your central platform for horse community", 
+                "dev": "Development Environment",
+                "your_overview": "Your overview", 
+                "your_sections": "Your Sections", 
+                "directly_to_sections": "Directly to the most important sections.", 
+                "overview": "Overview", 
+                "in_sight": "Complete overview "
+            },
+            "settings": {
+                "choose_theme": "Choose theme",
+                "choose_locale": "Choose language"
+            },
+            "tooltip": {
+                "choose_theme": "Choose theme",
+                "choose_locale": "Choose language"
             },
             "message": {
                 "confirm_delete": "Are you sure you want to delete this item?"

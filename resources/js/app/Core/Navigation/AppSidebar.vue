@@ -1,10 +1,12 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { usePage } from '@inertiajs/vue3';
 
 type ContextType = 'personal' | 'club' | 'stable';
 
+const { t } = useI18n();
 const props = defineProps<{
     context: ContextType;
 }>();
@@ -80,7 +82,7 @@ function isActive(path: string): boolean {
                 <v-list-item
                     class="navigation-item navigation-item--full-width"
                     :class="{ 'navigation-item--active': isActive('/settings') }"
-                    title="Einstellungen"
+                    :title="t('navigation.general.label.settings')"
                     prepend-icon="mdi-cog-outline"
                     href="/settings"
                     rounded="lg"
@@ -88,7 +90,7 @@ function isActive(path: string): boolean {
             </v-list>
 
             <div class="sm-sidebar__version">
-                Development Environment
+                {{ t('application.general.label.dev') }}
             </div>
         </div>
     </aside>
